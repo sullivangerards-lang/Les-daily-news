@@ -119,8 +119,21 @@
 </div>
 
 <script>
-// ── YOUR API KEY — get free at console.anthropic.com ──
-const ANTHROPIC_API_KEY = 'YOUR_API_KEY_HERE';
+// ── API KEY — stored locally in your browser, never in the code ──
+function getApiKey() {
+  let key = localStorage.getItem('anthropic_api_key');
+  if (!key) {
+    key = prompt('Enter your Anthropic API key (sk-ant-...):\n\nGet one free at console.anthropic.com\nIt will be saved on this device only.');
+    if (key && key.trim().startsWith('sk-')) {
+      localStorage.setItem('anthropic_api_key', key.trim());
+    } else {
+      alert('Invalid key. Reload the page to try again.');
+      return null;
+    }
+  }
+  return key;
+}
+const ANTHROPIC_API_KEY = getApiKey();
 
 // ── DATE ──
 const T = new Date();
