@@ -79,26 +79,19 @@
 </div>
 
 <script>
-// ── API KEY — stored locally in your browser, never in the code ──
+// ── API KEY ──
 function getApiKey() {
-  let key = localStorage.getItem('anthropic_api_key');
+  let key = localStorage.getItem('gemini_api_key');
   if (!key) {
-    key = prompt('Enter your Anthropic API key (sk-ant-...):\n\nGet one free at console.anthropic.com\nIt will be saved on this device only.');
-    if (key && key.trim().startsWith('sk-')) {
-      localStorage.setItem('anthropic_api_key', key.trim());
-    } else {
-      alert('Invalid key. Reload the page to try again.');
-      return null;
-    }
+    key = prompt('Enter your Google Gemini API key:');
+    if (key) localStorage.setItem('gemini_api_key', key.trim());
   }
   return key;
 }
-const ANTHROPIC_API_KEY = getApiKey();
+const GEMINI_API_KEY = getApiKey();
 
 const T = new Date();
-const WD = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const MO = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const dateStr = `${WD[T.getDay()]}, ${MO[T.getMonth()]} ${T.getDate()}, ${T.getFullYear()}`;
+const dateStr = T.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
 document.getElementById('hdr-date').textContent = dateStr;
 document.getElementById('meta-date').textContent = dateStr;
 document.getElementById('footer-date').textContent = dateStr;
@@ -107,7 +100,6 @@ const NY_TEAMS = new Set(['New York Giants','New York Jets','New York Yankees','
 
 async function fetchJSON(url) {
   const res = await fetch(url);
-  if (!res.ok) throw new Error(res.status);
   return res.json();
 }
 
@@ -116,142 +108,56 @@ function gameRow(event, isLive, isUpcoming=false) {
   const competitors = comp?.competitors || [];
   const away = competitors.find(c=>c.homeAway==='away') || competitors[0] || {};
   const home = competitors.find(c=>c.homeAway==='home') || competitors[1] || {};
-  const awayName = away.team?.shortDisplayName || away.team?.displayName || '—';
-  const homeName = home.team?.shortDisplayName || home.team?.displayName || '—';
-  const awayScore = away.score != null ? parseInt(away.score) : null;
-  const homeScore = home.score != null ? parseInt(home.score) : null;
-  const awayRec = away.records?.[0]?.summary || '';
-  const homeRec = home.records?.[0]?.summary || '';
-  const status = isLive ? (event.status?.displayClock||'Live') : isUpcoming ? formatDate(event.date) : 'Final';
-  const hasScore = awayScore !== null && homeScore !== null && !isUpcoming;
-  const awayWin = awayScore > homeScore;
-  const homeWin = homeScore > awayScore;
+  const awayScore = away.score || 0;
+  const homeScore = home.score || 0;
+  const status = isLive ? (event.status?.displayClock||'Live') : isUpcoming ? new Date(event.date).toLocaleDateString() : 'Final';
 
   return `<div class="game">
-    <div class="t-away ${hasScore?(awayWin?'t-win':'t-loss'):''}">
-      <div class="t-name">${awayName}</div>
-      ${awayRec?`<div class="t-rec">${awayRec}</div>`:''}
-    </div>
-    <div class="score">
-      ${hasScore?`<div class="score-num">${awayScore}–${homeScore}</div>`:`<div class="score-num" style="font-size:9pt;color:#aaa;">vs</div>`}
-      <span class="score-status">${status}</span>
-    </div>
-    <div class="t-home ${hasScore?(homeWin?'t-win':'t-loss'):''}">
-      <div class="t-name">${homeName}</div>
-      ${homeRec?`<div class="t-rec">${homeRec}</div>`:''}
-    </div>
+    <div class="t-away"><b>${away.team?.shortDisplayName || '—'}</b></div>
+    <div class="score"><div class="score-num">${awayScore}–${homeScore}</div><span class="score-status">${status}</span></div>
+    <div class="t-home"><b>${home.team?.shortDisplayName || '—'}</b></div>
   </div>`;
 }
 
-function formatDate(iso) {
-  if (!iso) return '';
-  return new Date(iso).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-}
-
 function buildLeague(label, icon, scoreData, newsBlurb) {
-  const events = (scoreData?.events || []).slice(0,6);
-
-  // NY teams to top of scores
-  events.sort((a,b) => {
-    const aNY = (a.competitions||[{}])[0]?.competitors?.some(c=>NY_TEAMS.has(c.team?.displayName))?-1:1;
-    const bNY = (b.competitions||[{}])[0]?.competitors?.some(c=>NY_TEAMS.has(c.team?.displayName))?-1:1;
-    return aNY-bNY;
-  });
-
-  const finished = events.filter(e=>e.status?.type?.completed);
-  const live     = events.filter(e=>e.status?.type?.state==='in');
-  const upcoming = events.filter(e=>e.status?.type?.state==='pre').slice(0,2);
-
-  let html = `<div class="league">
-    <div class="league-hdr"><span class="league-name">${label}</span><span class="league-icon">${icon}</span></div>
-    <div class="league-body">`;
-
-  if (live.length) {
-    html += `<div class="sec-lbl">🔴 Live Now</div>`;
-    live.slice(0,2).forEach(e => html += gameRow(e, true));
-  }
-  if (finished.length) {
-    html += `<div class="sec-lbl">Recent Scores</div>`;
-    finished.slice(0,3).forEach(e => html += gameRow(e, false));
-  }
-  if (upcoming.length) {
-    html += `<div class="sec-lbl">Coming Up</div>`;
-    upcoming.forEach(e => html += gameRow(e, false, true));
-  }
-  if (!finished.length && !live.length && !upcoming.length) {
-    html += `<p style="font-size:8pt;color:#999;padding:6px 0;">No games scheduled right now.</p>`;
+  const events = (scoreData?.events || []).slice(0,5);
+  let html = `<div class="league"><div class="league-hdr"><span class="league-name">${label}</span><span>${icon}</span></div><div class="league-body">`;
+  
+  if (events.length) {
+    html += `<div class="sec-lbl">Recent & Live</div>`;
+    events.forEach(e => html += gameRow(e, e.status?.type?.state==='in'));
+  } else {
+    html += `<p style="font-size:8pt;color:#999;padding:6px;">No games found.</p>`;
   }
 
-  if (newsBlurb) {
-    html += `<div class="news-blurb">📰 ${newsBlurb}</div>`;
-  }
-
-  html += `</div></div>`;
-  return html;
+  if (newsBlurb) html += `<div class="news-blurb">📰 ${newsBlurb}</div>`;
+  return html + `</div></div>`;
 }
 
 async function loadSportsNews() {
+  if (!GEMINI_API_KEY) return { nfl:"", nba:"", mlb:"", nhl:"" };
   try {
-    const prompt = `Today is ${dateStr}. Write short sports news blurbs for a middle school newspaper at Lutheran Elementary School in Brooklyn, NY. Students love New York teams.
-
-Return ONLY raw JSON, no markdown, no backticks.
-
-{
-  "nfl": "2 sentences about the most interesting NFL news right now. Mention NY teams (Giants, Jets, Bills) if relevant.",
-  "nba": "2 sentences about the most interesting NBA news right now. Mention NY teams (Knicks, Nets) if relevant.",
-  "mlb": "2 sentences about MLB news. Mention Yankees or Mets if relevant. If off-season, cover trades or signings.",
-  "nhl": "2 sentences about NHL news. Mention Rangers, Islanders, or Devils if relevant."
-}
-
-Keep language fun and age-appropriate for 11-14 year olds. Use real current news.`;
-
-    const messages = [{ role: 'user', content: prompt }];
-    let finalContent = [];
-
-    // Agentic loop: keep calling until we get a text response
-    for (let i = 0; i < 5; i++) {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': ANTHROPIC_API_KEY,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-          messages
-        })
-      });
-      const data = await response.json();
-      finalContent = data.content;
-      if (data.stop_reason === 'end_turn') break;
-      if (data.stop_reason === 'tool_use') {
-        messages.push({ role: 'assistant', content: data.content });
-        messages.push({ role: 'user', content: data.content
-          .filter(b => b.type === 'tool_use')
-          .map(b => ({ type: 'tool_result', tool_use_id: b.id, content: '' }))
-        });
-      } else break;
-    }
-
-    const text = finalContent.filter(b => b.type === 'text').map(b => b.text).join('');
-    return JSON.parse(text.replace(/```json|```/g, '').trim());
-  } catch(e) {
-    console.error('Sports news error:', e);
-    return { nfl: null, nba: null, mlb: null, nhl: null };
-  }
+    const prompt = `Today is ${dateStr}. Write short sports news blurbs (2 sentences each) for middle schoolers in Brooklyn, NY. Focus on NY teams. Return ONLY JSON: {"nfl":"...","nba":"...","mlb":"...","nhl":"..."}`;
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { response_mime_type: "application/json" }
+      })
+    });
+    const data = await response.json();
+    return JSON.parse(data.candidates[0].content.parts[0].text);
+  } catch(e) { return { nfl:"", nba:"", mlb:"", nhl:"" }; }
 }
 
 async function loadAll() {
   const ESPN = 'https://site.api.espn.com/apis/site/v2/sports';
   const leagues = [
-    { key:'nfl', path:'football/nfl',   icon:'🏈', label:'NFL · Football' },
-    { key:'nba', path:'basketball/nba', icon:'🏀', label:'NBA · Basketball' },
-    { key:'mlb', path:'baseball/mlb',   icon:'⚾', label:'MLB · Baseball' },
-    { key:'nhl', path:'hockey/nhl',     icon:'🏒', label:'NHL · Hockey' },
+    { key:'nfl', path:'football/nfl', icon:'🏈' },
+    { key:'nba', path:'basketball/nba', icon:'🏀' },
+    { key:'mlb', path:'baseball/mlb', icon:'⚾' },
+    { key:'nhl', path:'hockey/nhl', icon:'🏒' }
   ];
 
   const [scoresResults, news] = await Promise.all([
@@ -260,17 +166,10 @@ async function loadAll() {
   ]);
 
   const scores = {};
-  scoresResults.forEach((r,i) => {
-    scores[leagues[i].key] = r.status==='fulfilled' ? r.value : {events:[]};
-  });
+  scoresResults.forEach((r,i) => { scores[leagues[i].key] = r.status==='fulfilled' ? r.value : {events:[]}; });
 
-  document.getElementById('col-left').innerHTML =
-    buildLeague('NFL · Football',  '🏈', scores.nfl, news.nfl) +
-    buildLeague('MLB · Baseball',  '⚾', scores.mlb, news.mlb);
-
-  document.getElementById('col-right').innerHTML =
-    buildLeague('NBA · Basketball','🏀', scores.nba, news.nba) +
-    buildLeague('NHL · Hockey',    '🏒', scores.nhl, news.nhl);
+  document.getElementById('col-left').innerHTML = buildLeague('NFL', '🏈', scores.nfl, news.nfl) + buildLeague('MLB', '⚾', scores.mlb, news.mlb);
+  document.getElementById('col-right').innerHTML = buildLeague('NBA', '🏀', scores.nba, news.nba) + buildLeague('NHL', '🏒', scores.nhl, news.nhl);
 }
 
 loadAll();
