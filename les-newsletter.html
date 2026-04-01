@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Middle School Messenger – LES</title>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#1a2f6e; --gold:#c9a84c; --cream:#faf8f3; --ink:#1c1c1c; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--cream); color:var(--ink); font-family:'Source Serif 4',Georgia,serif; font-size:10pt; line-height:1.5; }
+
+  .masthead { border-top:4px solid var(--navy); border-bottom:4px solid var(--navy); padding:8px 16px 6px; text-align:center; }
+  .masthead-top { display:flex; justify-content:space-between; font-size:7.5pt; color:var(--navy); margin-bottom:2px; }
+  .masthead h1 { font-family:'UnifrakturMaguntia',cursive; font-size:38pt; color:var(--navy); line-height:1; }
+  .masthead .tagline { font-family:'Playfair Display',serif; font-style:italic; font-size:8.5pt; color:#555; letter-spacing:3px; text-transform:uppercase; margin-top:2px; }
+  .rule-gold { height:2px; background:var(--gold); margin:4px 0; }
+
+  .meta-bar { display:flex; justify-content:space-between; padding:4px 16px; background:var(--navy); color:white; font-size:7.5pt; }
+
+  .page { padding:10px 16px; display:grid; grid-template-columns:1fr 2px 1fr 2px 1fr; }
+  .col-divider { background:var(--navy); margin:0 8px; opacity:0.2; }
+  .col { padding:0 6px; }
+
+  .section-head { font-family:'Playfair Display',serif; font-size:8pt; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--navy); border-bottom:1.5px solid var(--navy); padding-bottom:2px; margin-bottom:5px; margin-top:8px; }
+  .section-head:first-child { margin-top:0; }
+
+  .story { margin-bottom:8px; }
+  .story-headline { font-family:'Playfair Display',serif; font-size:10.5pt; font-weight:700; line-height:1.2; margin-bottom:2px; }
+  .story-headline.lg { font-size:13pt; }
+  .story-body { font-size:8.5pt; line-height:1.55; color:#2a2a2a; text-align:justify; hyphens:auto; }
+  hr.div { border:none; border-top:1px solid #ddd; margin:6px 0; }
+
+  .weather-box { border:1.5px solid var(--navy); padding:6px 8px; margin-bottom:8px; background:white; }
+  .w-location { font-size:7pt; text-transform:uppercase; letter-spacing:1.5px; color:#888; margin-bottom:2px; }
+  .w-main { font-family:'Playfair Display',serif; font-size:18pt; font-weight:700; color:var(--navy); line-height:1; }
+  .w-desc { font-size:8pt; color:#555; margin-top:2px; }
+  .w-details { display:flex; gap:10px; margin-top:4px; font-size:7.5pt; color:#444; }
+
+  .fact-box { border:1.5px solid var(--gold); background:#fffbf0; padding:6px 8px; margin-top:6px; }
+  .fact-label { font-family:'Playfair Display',serif; font-size:7pt; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--gold); margin-bottom:3px; }
+
+  .otd-box { border-left:3px solid var(--navy); padding:4px 8px; background:#f0f3fa; }
+  .otd-label { font-family:'Playfair Display',serif; font-size:7pt; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--navy); margin-bottom:2px; }
+
+  .spin-wrap { display:flex; align-items:center; gap:6px; font-size:8pt; color:#999; padding:8px 0; }
+  .spinner { width:10px; height:10px; border:2px solid var(--navy); border-top-color:transparent; border-radius:50%; animation:spin .8s linear infinite; flex-shrink:0; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  .footer { border-top:3px double var(--navy); padding:4px 16px; display:flex; justify-content:space-between; font-size:7pt; color:#666; }
+  @media print { body{background:white;} @page{margin:.5in;size:letter;} }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-top">
+    <span>Lutheran Elementary School · Brooklyn, NY</span>
+    <span id="meta-date">—</span>
+    <span>Vol. 1 · Daily Edition</span>
+  </div>
+  <div class="rule-gold"></div>
+  <h1>The Middle School Messenger</h1>
+  <div class="tagline">Your Daily Homeroom News Update</div>
+  <div class="rule-gold" style="margin-top:5px;"></div>
+</div>
+
+<div class="meta-bar">
+  <span>🏫 LES — The Key to Success</span>
+  <span id="meta-weather">Loading weather…</span>
+  <span id="meta-day">—</span>
+</div>
+
+<div class="page">
+  <div class="col">
+    <div class="section-head">Today's Weather</div>
+    <div class="weather-box" id="weather-box"><div class="spin-wrap"><div class="spinner"></div>Fetching weather…</div></div>
+    <div class="section-head">Top Story</div>
+    <div id="s0"><div class="spin-wrap"><div class="spinner"></div>Loading news…</div></div>
+    <hr class="div">
+    <div id="s1"></div>
+  </div>
+  <div class="col-divider"></div>
+  <div class="col">
+    <div class="section-head">World &amp; Science News</div>
+    <div id="s2"><div class="spin-wrap"><div class="spinner"></div>Loading…</div></div>
+    <hr class="div">
+    <div id="s3"></div>
+    <hr class="div">
+    <div id="s4"></div>
+  </div>
+  <div class="col-divider"></div>
+  <div class="col">
+    <div class="section-head">On This Day</div>
+    <div class="otd-box" id="otd">
+      <div class="otd-label">On This Day in History</div>
+      <div class="spin-wrap"><div class="spinner"></div>Loading…</div>
+    </div>
+    <div class="section-head" style="margin-top:10px;">Fun Fact of the Day</div>
+    <div class="fact-box" id="fact">
+      <div class="fact-label">✨ Did You Know?</div>
+      <div class="spin-wrap"><div class="spinner"></div>Loading…</div>
+    </div>
+    <div class="section-head" style="margin-top:10px;">More Headlines</div>
+    <div id="s5"><div class="spin-wrap"><div class="spinner"></div>Loading…</div></div>
+    <hr class="div">
+    <div id="s6"></div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>Lutheran Elementary School · Brooklyn, NY 11209</span>
+  <span id="footer-date">—</span>
+  <span>Printed for Homeroom · Not for distribution</span>
+</div>
+
+<script>
+// ── API KEY — saved in browser, never in code ──
+function getApiKey() {
+  let key = localStorage.getItem('groq_api_key');
+  if (!key) {
+    key = prompt('Enter your Groq API key (starts with gsk_...):\n\nGet one FREE at console.groq.com → API Keys\nSaved on this device only — never sent to GitHub.');
+    if (key && key.trim().startsWith('gsk_')) {
+      localStorage.setItem('groq_api_key', key.trim());
+    } else {
+      alert('Invalid key — must start with gsk_. Reload to try again.');
+      return null;
+    }
+  }
+  return key;
+}
+const GROQ_KEY = getApiKey();
+
+// ── DATE ──
+const T = new Date();
+const WD = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MO = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const dateStr = `${WD[T.getDay()]}, ${MO[T.getMonth()]} ${T.getDate()}, ${T.getFullYear()}`;
+document.getElementById('meta-date').textContent = dateStr;
+document.getElementById('meta-day').textContent = WD[T.getDay()];
+document.getElementById('footer-date').textContent = dateStr;
+
+// ── WEATHER — Open-Meteo (free, no key) ──
+async function loadWeather() {
+  try {
+    const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=40.6366&longitude=-74.0351&current=temperature_2m,weathercode,windspeed_10m,relative_humidity_2m&temperature_unit=fahrenheit&windspeed_unit=mph&timezone=America%2FNew_York');
+    const d = await r.json();
+    const c = d.current;
+    const temp = Math.round(c.temperature_2m);
+    const icon = wmoIcon(c.weathercode);
+    const desc = wmoDesc(c.weathercode);
+    document.getElementById('weather-box').innerHTML = `
+      <div class="w-location">Brooklyn, NY</div>
+      <div class="w-main">${icon} ${temp}°F</div>
+      <div class="w-desc">${desc}</div>
+      <div class="w-details"><span>💨 ${Math.round(c.windspeed_10m)} mph</span><span>💧 ${c.relative_humidity_2m}% humidity</span></div>`;
+    document.getElementById('meta-weather').textContent = `${icon} ${temp}°F · ${desc}`;
+  } catch(e) {
+    document.getElementById('weather-box').innerHTML = '<p style="font-size:8pt;color:#999;padding:4px;">Weather unavailable</p>';
+  }
+}
+const wmoDesc = c => ({0:'Clear sky',1:'Mostly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',80:'Rain showers',95:'Thunderstorm'}[c] || 'Mixed conditions');
+const wmoIcon = c => c===0?'☀️':c<=2?'🌤️':c<=3?'☁️':c<=48?'🌫️':c<=55?'🌦️':c<=65?'🌧️':c<=77?'❄️':c<=82?'🌧️':'⛈️';
+
+// ── ON THIS DAY — Wikipedia (free, no key) ──
+async function loadOTD() {
+  const m = T.getMonth()+1, d = T.getDate();
+  try {
+    const res = await fetch(`https://en.wikipedia.org/api/rest_v1/feed/onthisday/events/${m}/${d}`);
+    const data = await res.json();
+    const BAD = /crash|kill|dead|death|murder|assassin|disaster|attack|bomb|terror|war|flood|fire|hurricane|earthquake|tsunami|genocide|massacre|accident|fatal|tragedy|coup|riot/i;
+    const events = (data.events||[]).filter(e => e.year > 1850 && e.year < 2010 && !BAD.test(e.text));
+    const pick = events[Math.floor(Math.random() * Math.min(events.length, 8))];
+    if (pick) {
+      document.getElementById('otd').innerHTML = `
+        <div class="otd-label">On This Day · ${MO[T.getMonth()]} ${d}</div>
+        <p style="font-size:8pt;line-height:1.5;"><strong>${pick.year}:</strong> ${pick.text}</p>`;
+    } else {
+      document.getElementById('otd').innerHTML = `<div class="otd-label">On This Day · ${MO[T.getMonth()]} ${d}</div><p style="font-size:8pt;">Check back tomorrow!</p>`;
+    }
+  } catch(e) {
+    document.getElementById('otd').innerHTML = `<div class="otd-label">On This Day</div><p style="font-size:8pt;">Unavailable today.</p>`;
+  }
+}
+
+// ── NEWS + FUN FACT — Groq API (free) ──
+async function loadContent() {
+  if (!GROQ_KEY) {
+    ['s0','s1','s2','s3','s4','s5','s6'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = '<p style="font-size:8pt;color:#999;">API key required — reload page.</p>';
+    });
+    document.getElementById('fact').innerHTML = '<div class="fact-label">✨ Did You Know?</div><p style="font-size:8pt;color:#999;">API key required.</p>';
+    return;
+  }
+
+  try {
+    const prompt = `Today is ${dateStr}. You are writing content for a printed daily newspaper for middle school students (grades 6-8) at Lutheran Elementary School in Brooklyn, NY.
+
+Return ONLY a raw JSON object. No markdown, no backticks, no explanation — just the JSON starting with { and ending with }.
+
+{
+  "stories": [
+    { "headline": "Short punchy headline", "body": "2-3 sentences on a real, interesting world event or discovery. Topics: science, technology, animals, space, environment, world events. Age-appropriate for 11-14 year olds." },
+    { "headline": "...", "body": "..." },
+    { "headline": "...", "body": "..." },
+    { "headline": "...", "body": "..." },
+    { "headline": "...", "body": "..." },
+    { "headline": "...", "body": "..." },
+    { "headline": "...", "body": "..." }
+  ],
+  "funFact": "One surprising, upbeat fact for 11-14 year olds about animals, science, history, or nature."
+}
+
+Write 7 varied stories on different topics. Keep language fun and accessible. Upbeat tone throughout.`;
+
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GROQ_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        temperature: 0.7,
+        max_tokens: 1500,
+        messages: [
+          { role: 'system', content: 'You are a helpful assistant that writes age-appropriate newspaper content for middle school students. Always respond with raw JSON only — no markdown, no backticks.' },
+          { role: 'user', content: prompt }
+        ]
+      })
+    });
+
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+
+    const raw = data.choices?.[0]?.message?.content || '';
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const json = JSON.parse(clean);
+
+    json.stories.forEach((s, i) => {
+      const el = document.getElementById('s' + i);
+      if (!el) return;
+      el.innerHTML = `<div class="story">
+        <div class="story-headline ${i===0?'lg':''}">${s.headline}</div>
+        <div class="story-body">${s.body}</div>
+      </div>`;
+    });
+
+    document.getElementById('fact').innerHTML = `
+      <div class="fact-label">✨ Did You Know?</div>
+      <p style="font-size:8pt;line-height:1.5;">${json.funFact}</p>`;
+
+  } catch(e) {
+    console.error('Groq error:', e);
+    const msg = e.message?.includes('401') ? 'Invalid API key — reload and re-enter.' : 'Content unavailable — check connection.';
+    ['s0','s1','s2','s3','s4','s5','s6'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.innerHTML.includes('spinner')) el.innerHTML = `<p style="font-size:8pt;color:#999;">${msg}</p>`;
+    });
+    document.getElementById('fact').innerHTML = `<div class="fact-label">✨ Did You Know?</div><p style="font-size:8pt;color:#999;">${msg}</p>`;
+  }
+}
+
+loadWeather();
+loadOTD();
+loadContent();
+</script>
+</body>
+</html>
