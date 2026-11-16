@@ -51,18 +51,30 @@ body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georg
 <div class="footer"><span>Lutheran Elementary School · Brooklyn, NY 11209 · LES — The Key to Success</span><span id="footer-date"></span>
 <span class="no-print"><a href="#" id="setkey">Set AI key</a></span></div>
 <script>
-async function pickModels(k){const r=await fetch('https://api.groq.com/openai/v1/models',{headers:{Authorization:'Bearer '+k}});const d=await r.json();if(d.error)throw new Error(d.error.message);
-const ids=(d.data||[]).map(m=>m.id).filter(i=>!/whisper|guard|tts|orpheus|embed|playai|safeguard/i.test(i));
-const first=[/llama-3\.3-70b/,/llama-4/,/qwen/,/gpt-oss-120b/,/gpt-oss-20b/,/llama-3\.1-8b/],o=[];
-first.forEach(p=>ids.forEach(i=>{if(p.test(i)&&!o.includes(i))o.push(i)}));ids.forEach(i=>{if(!o.includes(i))o.push(i)});return o.slice(0,4)}
+async function pickModels(k){
+  const r=await fetch('https://api.groq.com/openai/v1/models',{headers:{Authorization:'Bearer '+k}});
+  const d=await r.json();if(d.error)throw new Error(d.error.message);
+  const ids=(d.data||[]).map(m=>m.id).filter(i=>!/whisper|guard|tts|orpheus|embed|playai|safeguard/i.test(i));
+  const first=[/llama-3\.3-70b/,/llama-3\.1-70b/,/qwen/,/llama-3\.1-8b/],o=[];
+  first.forEach(p=>ids.forEach(i=>{if(p.test(i)&&!o.includes(i))o.push(i)}));
+  ids.forEach(i=>{if(!o.includes(i))o.push(i)});
+  return o.slice(0,3);
+}
+
 const ESPN='https://site.api.espn.com/apis/site/v2/sports';
-const LEAGUES=[{k:'nfl',p:'football/nfl',i:'🏈',l:'NFL · Football'},{k:'nba',p:'basketball/nba',i:'🏀',l:'NBA · Basketball'},{k:'mlb',p:'baseball/mlb',i:'⚾',l:'MLB · Baseball'},{k:'nhl',p:'hockey/nhl',i:'🏒',l:'NHL · Hockey'}];
+const LEAGUES=[
+  {k:'nfl',p:'football/nfl',i:'🏈',l:'NFL · Football'},
+  {k:'nba',p:'basketball/nba',i:'🏀',l:'NBA · Basketball'},
+  {k:'mlb',p:'baseball/mlb',i:'⚾',l:'MLB · Baseball'},
+  {k:'nhl',p:'hockey/nhl',i:'🏒',l:'NHL · Hockey'}
+];
 const NY=['New York Giants','New York Jets','New York Yankees','New York Mets','New York Knicks','Brooklyn Nets','New York Rangers','New York Islanders','New Jersey Devils','Buffalo Bills'];
 const WD=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MO=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const T=new Date();
 const dateStr=`${WD[T.getDay()]}, ${MO[T.getMonth()]} ${T.getDate()}, ${T.getFullYear()}`;
 ['hdr-date','meta-date','footer-date'].forEach(id=>document.getElementById(id).textContent=dateStr);
+
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const clip=(s,n)=>s&&s.length>n?s.slice(0,n).replace(/\s+\S*$/,'')+'…':(s||'');
 const ymd=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
@@ -73,11 +85,14 @@ function getKey(){
   try{
     const u=new URLSearchParams(location.search).get('key');
     if(u&&u.startsWith('gsk_')){localStorage.setItem('groq_api_key',u);history.replaceState(null,'',location.pathname)}
-    return localStorage.getItem('groq_api_key')
+    return localStorage.getItem('groq_api_key');
   }catch(e){return null}
 }
-document.getElementById('setkey').onclick=e=>{e.preventDefault();const k=prompt('Groq API key (starts with gsk_):');
-  if(k&&k.trim().startsWith('gsk_')){localStorage.setItem('groq_api_key',k.trim());location.reload()}};
+document.getElementById('setkey').onclick=e=>{
+  e.preventDefault();
+  const k=prompt('Groq API key (starts with gsk_):');
+  if(k&&k.trim().startsWith('gsk_')){localStorage.setItem('groq_api_key',k.trim());location.reload()}
+};
 
 async function getJSON(u){const r=await fetch(u);if(!r.ok)throw new Error(r.status);return r.json()}
 const fmtDay=iso=>iso?new Date(iso).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}):'';
@@ -87,6 +102,17 @@ function parts(e){
   const away=c.find(x=>x.homeAway==='away')||c[0]||{},home=c.find(x=>x.homeAway==='home')||c[1]||{};
   return{away,home,isNY:[away,home].some(x=>NY.includes(x.team?.displayName))}
 }
+
+function validEvents(sc){
+  const minTime=shift(-4).getTime();
+  const maxTime=shift(3).getTime();
+  return (sc.events||[]).filter(e=>{
+    const t=new Date(e.date).getTime();
+    const sType=e.season?.type; // 2 = Regular Season, 3 = Postseason
+    return t>=minTime && t<=maxTime && (sType===2 || sType===3);
+  });
+}
+
 function gameRow(e){
   const{away,home}=parts(e),st=e.status?.type?.state;
   const a=parseInt(away.score),h=parseInt(home.score),has=st!=='pre'&&!isNaN(a)&&!isNaN(h);
@@ -94,60 +120,104 @@ function gameRow(e){
   const side=(t,win,cls)=>`<div class="${cls} ${has?(win?'t-win':'t-loss'):''}"><div class="t-name">${esc(t.team?.shortDisplayName||t.team?.displayName||'—')}</div>${t.records?.[0]?.summary?`<div class="t-rec">${esc(t.records[0].summary)}</div>`:''}</div>`;
   return `<div class="game">${side(away,a>h,'t-away')}<div class="score">${has?`<div class="score-num">${a}–${h}</div>`:'<div class="score-num" style="font-size:9pt;color:#aaa">vs</div>'}<span class="score-status">${esc(status)}</span></div>${side(home,h>a,'t-home')}</div>`
 }
-function summarize(sc,nw){
-  const g=(sc.events||[]).filter(e=>e.status?.type?.completed).slice(0,6).map(e=>{const{away,home}=parts(e);return `${away.team?.displayName} ${away.score} @ ${home.team?.displayName} ${home.score}`}).join(' | ')||'No recent games';
+
+function summarize(evList,nw){
+  const fin=evList.filter(e=>e.status?.type?.completed).slice(0,8).map(e=>{
+    const{away,home}=parts(e);
+    const a=parseInt(away.score),h=parseInt(home.score);
+    const aName=away.team?.displayName,hName=home.team?.displayName;
+    if(a>h)return `${aName} defeated ${hName} ${a}-${h} (${fmtDay(e.date)})`;
+    if(h>a)return `${hName} defeated ${aName} ${h}-${a} (${fmtDay(e.date)})`;
+    return `${aName} tied ${hName} ${a}-${h}`;
+  }).join(' | ')||'None';
+
+  const up=evList.filter(e=>e.status?.type?.state==='pre').slice(0,6).map(e=>{
+    const{away,home}=parts(e);
+    return `${away.team?.displayName} at ${home.team?.displayName} (${fmtDay(e.date)})`;
+  }).join(' | ')||'None';
+
   const h=(nw.articles||[]).slice(0,5).map(a=>a.headline+(a.description?' ('+clip(a.description,110)+')':'')).join(' | ')||'No news';
-  return{g,h}
+  return{fin,up,h};
 }
 
 async function askAI(data){
   const k=getKey();if(!k)throw new Error('No AI key saved on this device (use "Set AI key" at the bottom).');
-  const body=LEAGUES.map(l=>`${l.k.toUpperCase()} scores: ${data[l.k].g}\n${l.k.toUpperCase()} news: ${data[l.k].h}`).join('\n\n');
-  const prompt=`Today is ${dateStr}. You write for a middle school sports page at Lutheran Elementary School in Brooklyn. Students love NY teams (Giants, Jets, Bills, Yankees, Mets, Knicks, Nets, Rangers, Islanders, Devils).\nUse ONLY the real scores and headlines below. For each league write a "rundown" (2-3 fun sentences on results and league news; mention NY teams if present) and a "watch" (one sentence on a team or player to watch, based on the data). If a league is in its off-season, say so and focus on its news. Age-appropriate for ages 11-14.\n\n${body}\n\nReturn JSON: {"nfl":{"rundown":"","watch":""},"nba":{...},"mlb":{...},"nhl":{...}}`;
+  const body=LEAGUES.map(l=>`=== ${l.k.toUpperCase()} ===\nCompleted Games: ${data[l.k].fin}\nUpcoming Games: ${data[l.k].up}\nHeadlines: ${data[l.k].h}`).join('\n\n');
+  const prompt=`Today is ${dateStr}. You write for a middle school sports page (ages 11-14) at Lutheran Elementary School in Brooklyn. Students follow NY teams (Giants, Jets, Bills, Yankees, Mets, Knicks, Nets, Rangers, Islanders, Devils).
+
+STRICT RULES:
+1. ONLY mention game scores, winners, and matchups explicitly listed in the data below. NEVER invent scores, games, or playoff clinches.
+2. If "Completed Games" and "Upcoming Games" are both "None", explicitly state the league is in its off-season and summarize ONLY the headlines.
+3. For each league write:
+   - "rundown": 2-3 upbeat, accurate sentences summarizing the real results, upcoming matchups, and headlines (highlighting NY teams if they appear in the data).
+   - "watch": 1 sentence on a team or player to watch based strictly on the provided data.
+
+DATA:
+${body}
+
+Return valid JSON only: {"nfl":{"rundown":"","watch":""},"nba":{"rundown":"","watch":""},"mlb":{"rundown":"","watch":""},"nhl":{"rundown":"","watch":""}}`;
+
   let err;
   for(const m of await pickModels(k)){
     try{
-      const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+k},
-        body:JSON.stringify({model:m,temperature:.8,max_tokens:2500,...(/gpt-oss/.test(m)?{reasoning_effort:'low'}:{}),messages:[{role:'system',content:'You are a middle school sports writer. Reply with JSON only.'},{role:'user',content:prompt}]})});
+      const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+        method:'POST',
+        headers:{'Content-Type':'application/json',Authorization:'Bearer '+k},
+        body:JSON.stringify({
+          model:m,
+          temperature:0.2,
+          max_tokens:1500,
+          ...(/gpt-oss/.test(m)?{reasoning_effort:'low'}:{}),
+          messages:[
+            {role:'system',content:'You are a factual middle school sports writer. Never fabricate scores or teams not in the prompt. Reply with JSON only.'},
+            {role:'user',content:prompt}
+          ]
+        })
+      });
       const d=await r.json();if(d.error)throw new Error(d.error.message);
-      const t=d.choices[0].message.content;return JSON.parse(t.slice(t.indexOf('{'),t.lastIndexOf('}')+1))
+      const t=d.choices[0].message.content;
+      return JSON.parse(t.slice(t.indexOf('{'),t.lastIndexOf('}')+1));
     }catch(e){err=new Error((err?err.message+' | ':'')+m+': '+e.message)}
   }
-  throw err
+  throw err;
 }
 
-function buildLeague(lg,sc,nw,ai){
-  let ev=(sc.events||[]).slice();
+function buildLeague(lg,evList,nw,ai){
   const sortNY=(a,b)=>(parts(b).isNY-parts(a).isNY);
-  const live=ev.filter(e=>e.status?.type?.state==='in').sort(sortNY).slice(0,2);
-  const fin=ev.filter(e=>e.status?.type?.completed).sort((a,b)=>sortNY(a,b)||new Date(b.date)-new Date(a.date)).slice(0,4);
-  const up=ev.filter(e=>e.status?.type?.state==='pre').sort((a,b)=>sortNY(a,b)||new Date(a.date)-new Date(b.date)).slice(0,3);
+  const live=evList.filter(e=>e.status?.type?.state==='in').sort(sortNY).slice(0,2);
+  const fin=evList.filter(e=>e.status?.type?.completed).sort((a,b)=>sortNY(a,b)||new Date(b.date)-new Date(a.date)).slice(0,4);
+  const up=evList.filter(e=>e.status?.type?.state==='pre').sort((a,b)=>sortNY(a,b)||new Date(a.date)-new Date(b.date)).slice(0,3);
+
   let h=`<div class="league"><div class="league-hdr"><span class="league-name">${lg.l}</span><span style="font-size:14pt">${lg.i}</span></div><div class="league-body">`;
   if(ai?.rundown)h+=`<div class="rundown">${esc(ai.rundown)}</div>${ai.watch?`<div class="watch">👀 ${esc(ai.watch)}</div>`:''}`;
   if(live.length)h+=`<div class="sec-lbl">Live Now</div>`+live.map(gameRow).join('');
   if(fin.length)h+=`<div class="sec-lbl">Recent Scores</div>`+fin.map(gameRow).join('');
   if(up.length)h+=`<div class="sec-lbl">Coming Up</div>`+up.map(gameRow).join('');
-  if(!live.length&&!fin.length&&!up.length)h+=`<div class="off">No games this week — this league may be in its off-season.</div>`;
+  if(!live.length&&!fin.length&&!up.length)h+=`<div class="off">No games scheduled — currently in the off-season.</div>`;
   const arts=(nw.articles||[]).filter(a=>a.headline).slice(0,3);
   if(arts.length)h+=`<div class="sec-lbl">Top Stories</div>`+arts.map(a=>`<div class="hl"><b>${esc(a.headline)}</b>${a.description?`<br><span>${esc(clip(a.description,150))}</span>`:''}</div>`).join('');
-  return h+'</div></div>'
+  return h+'</div></div>';
 }
 
 async function loadAll(){
   const range=`${ymd(shift(-3))}-${ymd(shift(2))}`;
   const [s,n]=await Promise.all([
-    Promise.allSettled(LEAGUES.map(l=>getJSON(`${ESPN}/${l.p}/scoreboard?dates=${range}`).catch(()=>getJSON(`${ESPN}/${l.p}/scoreboard`)))),
-    Promise.allSettled(LEAGUES.map(l=>getJSON(`${ESPN}/${l.p}/news?limit=6`)))]);
-  const sc={},nw={},sum={};
-  LEAGUES.forEach((l,i)=>{sc[l.k]=s[i].status==='fulfilled'?s[i].value:{events:[]};nw[l.k]=n[i].status==='fulfilled'?n[i].value:{articles:[]};sum[l.k]=summarize(sc[l.k],nw[l.k])});
-  const ok=a=>a.filter(r=>r.status==='fulfilled').length;
-  if(ok(s)<4||ok(n)<4)showNote(`ESPN loaded: scores ${ok(s)}/4, headlines ${ok(n)}/4`+((s.find(r=>r.status==='rejected')||n.find(r=>r.status==='rejected')).reason?' (error '+(s.find(r=>r.status==='rejected')||n.find(r=>r.status==='rejected')).reason.message+')':''));
+    Promise.allSettled(LEAGUES.map(l=>getJSON(`${ESPN}/${l.p}/scoreboard?dates=${range}`))),
+    Promise.allSettled(LEAGUES.map(l=>getJSON(`${ESPN}/${l.p}/news?limit=6`)))
+  ]);
+  const ev={},nw={},sum={};
+  LEAGUES.forEach((l,i)=>{
+    const rawSc=s[i].status==='fulfilled'?s[i].value:{events:[]};
+    ev[l.k]=validEvents(rawSc);
+    nw[l.k]=n[i].status==='fulfilled'?n[i].value:{articles:[]};
+    sum[l.k]=summarize(ev[l.k],nw[l.k]);
+  });
   const draw=ai=>{
-    const b=k=>buildLeague(LEAGUES.find(l=>l.k===k),sc[k],nw[k],ai?.[k]);
+    const b=k=>buildLeague(LEAGUES.find(l=>l.k===k),ev[k],nw[k],ai?.[k]);
     document.getElementById('col-left').innerHTML=b('nfl')+b('mlb');
-    document.getElementById('col-right').innerHTML=b('nba')+b('nhl')
+    document.getElementById('col-right').innerHTML=b('nba')+b('nhl');
   };
-  draw(null); // scores and headlines show immediately, even if the AI step fails
+  draw(null);
   try{draw(await askAI(sum))}catch(e){console.error(e);showNote('AI summaries unavailable: '+e.message)}
 }
 loadAll();
