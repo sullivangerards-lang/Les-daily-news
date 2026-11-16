@@ -225,7 +225,9 @@ function buildLeague(lg,pk,nw,ai){
   if(fin.length)h+=`<div class="sec-lbl">Recent Scores</div>`+fin.map(gameRow).join('');
   if(up.length)h+=`<div class="sec-lbl">Coming Up</div>`+up.map(gameRow).join('');
   if(!live.length&&!fin.length&&!up.length)h+=`<div class="off">No games scheduled — currently in the off-season.</div>`;
-  const arts=(nw.articles||[]).filter(a=>a.headline).slice(0,3);
+ const arts = (nw.articles || [])
+  .filter(a => a.headline && !/odds|best bets|betting|spread|parlay|fantasy/i.test(a.headline + ' ' + (a.description || '')))
+  .slice(0, 3);
   if(arts.length)h+=`<div class="sec-lbl">Top Stories</div>`+arts.map(a=>`<div class="hl"><b>${esc(a.headline)}</b>${a.description?`<br><span>${esc(clip(a.description,150))}</span>`:''}</div>`).join('');
   return h+'</div></div>';
 }
