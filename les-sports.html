@@ -1,302 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Middle School Sports News – LES</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Source+Serif+4:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-  :root { --navy:#1a2f6e; --gold:#c9a84c; --cream:#faf8f3; --ink:#1c1c1c; --win:#1a6e2f; --loss:#888; }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--cream); color:var(--ink); font-family:'Source Serif 4',Georgia,serif; font-size:10pt; }
-
-  .masthead { background:var(--navy); padding:8px 16px; display:flex; align-items:center; justify-content:space-between; }
-  .masthead h1 { font-family:'Oswald',sans-serif; font-size:22pt; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:white; }
-  .masthead h1 span { color:var(--gold); }
-  .masthead .sub { font-size:7.5pt; color:#aac; text-align:right; line-height:1.6; }
-  .gold-bar { height:4px; background:var(--gold); }
-  .meta-bar { display:flex; justify-content:space-between; padding:3px 16px; background:#f0f3fa; border-bottom:1px solid #ddd; font-size:7.5pt; color:var(--navy); font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:.5px; }
-
-  .page { padding:10px 14px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-
-  .league { border:1px solid #ddd; background:white; margin-bottom:10px; break-inside:avoid; }
-  .league-hdr { background:var(--navy); color:white; padding:4px 10px; display:flex; justify-content:space-between; align-items:center; }
-  .league-name { font-family:'Oswald',sans-serif; font-size:11pt; font-weight:600; text-transform:uppercase; letter-spacing:1.5px; }
-  .league-icon { font-size:14pt; }
-  .league-body { padding:6px 8px; }
-
-  .sec-lbl { font-family:'Oswald',sans-serif; font-size:7pt; text-transform:uppercase; letter-spacing:2px; color:var(--gold); border-bottom:1px solid var(--gold); padding-bottom:3px; margin-bottom:5px; margin-top:5px; }
-  .sec-lbl:first-child { margin-top:0; }
-
-  .game { display:grid; grid-template-columns:1fr 56px 1fr; align-items:center; padding:3px 0; border-bottom:1px dotted #eee; font-size:8pt; gap:3px; }
-  .game:last-child { border-bottom:none; }
-  .t-away { text-align:right; }
-  .t-home { text-align:left; }
-  .t-name { font-family:'Oswald',sans-serif; font-size:8.5pt; font-weight:600; text-transform:uppercase; letter-spacing:.3px; }
-  .t-rec { font-size:6.5pt; color:#aaa; }
-  .t-win .t-name { color:var(--win); }
-  .t-loss .t-name { color:var(--loss); }
-  .score { text-align:center; }
-  .score-num { font-family:'Oswald',sans-serif; font-size:13pt; font-weight:700; color:var(--navy); line-height:1; }
-  .score-status { display:block; font-size:6.5pt; color:#999; font-family:'Source Serif 4',serif; }
-  .news-blurb { font-size:8pt; color:#444; line-height:1.55; margin-top:6px; padding-top:5px; border-top:1px solid #eee; font-style:italic; }
-
-  .spin-wrap { display:flex; align-items:center; gap:6px; font-size:8pt; color:#999; padding:12px; justify-content:center; }
-  .spinner { width:10px; height:10px; border:2px solid var(--navy); border-top-color:transparent; border-radius:50%; animation:spin .8s linear infinite; }
-  @keyframes spin { to { transform:rotate(360deg); } }
-
-  .footer { border-top:3px double var(--navy); padding:4px 16px; display:flex; justify-content:space-between; font-size:7pt; color:#666; }
-  @media print { body{background:white;} @page{margin:.5in;size:letter;} }
-</style>
-</head>
-<body>
-
-<div class="masthead">
-  <div>
-    <h1>Middle School <span>Sports</span> News</h1>
-    <div style="font-size:7.5pt;color:#aac;margin-top:2px;font-family:'Source Serif 4',serif;">Your Daily Source for Local &amp; National Athletics</div>
-  </div>
-  <div class="sub">Lutheran Elementary School<br>Brooklyn, NY 11209<br><span id="hdr-date" style="color:var(--gold);font-weight:600;"></span></div>
-</div>
+:root{--navy:#1a2f6e;--gold:#c9a84c;--cream:#faf8f3;--ink:#1c1c1c;--win:#1a6e2f;--loss:#888}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georgia,serif;font-size:10pt}
+.masthead{background:var(--navy);padding:8px 16px;display:flex;align-items:center;justify-content:space-between}
+.masthead h1{font-family:'Oswald',sans-serif;font-size:22pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff}
+.masthead h1 span{color:var(--gold)}
+.sub{font-size:7.5pt;color:#aac;text-align:right;line-height:1.6}
+.gold-bar{height:4px;background:var(--gold)}
+.meta-bar{display:flex;justify-content:space-between;padding:3px 16px;background:#f0f3fa;border-bottom:1px solid #ddd;font-size:7.5pt;color:var(--navy);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px}
+.page{padding:10px 14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.league{border:1px solid #ddd;background:#fff;margin-bottom:10px;break-inside:avoid}
+.league-hdr{background:var(--navy);color:#fff;padding:4px 10px;display:flex;justify-content:space-between;align-items:center}
+.league-name{font-family:'Oswald',sans-serif;font-size:11pt;font-weight:600;text-transform:uppercase;letter-spacing:1.5px}
+.league-body{padding:6px 8px}
+.sec-lbl{font-family:'Oswald',sans-serif;font-size:7pt;text-transform:uppercase;letter-spacing:2px;color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:3px;margin:7px 0 5px}
+.sec-lbl:first-child{margin-top:0}
+.game{display:grid;grid-template-columns:1fr 62px 1fr;align-items:center;padding:3px 0;border-bottom:1px dotted #eee;font-size:8pt;gap:3px}
+.game:last-child{border-bottom:none}
+.t-away{text-align:right}
+.t-name{font-family:'Oswald',sans-serif;font-size:8.5pt;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.t-rec{font-size:6.5pt;color:#aaa}
+.t-win .t-name{color:var(--win)}.t-loss .t-name{color:var(--loss)}
+.score{text-align:center}
+.score-num{font-family:'Oswald',sans-serif;font-size:13pt;font-weight:700;color:var(--navy);line-height:1}
+.score-status{display:block;font-size:6.5pt;color:#999}
+.rundown{font-size:8.5pt;line-height:1.55;color:#333}
+.watch{font-size:8pt;margin-top:4px;color:var(--navy);font-weight:600}
+.hl{font-size:8pt;line-height:1.45;padding:3px 0;border-bottom:1px dotted #eee}
+.hl:last-child{border-bottom:none}
+.hl b{font-family:'Oswald',sans-serif;font-weight:600;font-size:8.5pt;color:var(--navy)}
+.hl span{color:#555}
+.off{font-size:8pt;color:#999;padding:4px 0}
+.note{font-size:7pt;color:#a33;padding:2px 16px}
+.spin-wrap{font-size:8pt;color:#999;padding:12px;text-align:center}
+.footer{border-top:3px double var(--navy);padding:4px 16px;display:flex;justify-content:space-between;font-size:7pt;color:#666}
+.footer a{color:#666}
+@media print{body{background:#fff}.no-print{display:none}@page{margin:.5in;size:letter}}
+</style></head><body>
+<div class="masthead"><div><h1>Middle School <span>Sports</span> News</h1>
+<div style="font-size:7.5pt;color:#aac;margin-top:2px">Your Daily Source for Local &amp; National Athletics</div></div>
+<div class="sub">Lutheran Elementary School<br>Brooklyn, NY 11209<br><span id="hdr-date" style="color:var(--gold);font-weight:600"></span></div></div>
 <div class="gold-bar"></div>
-<div class="meta-bar">
-  <span>🏈 NFL &nbsp;·&nbsp; 🏀 NBA &nbsp;·&nbsp; ⚾ MLB &nbsp;·&nbsp; 🏒 NHL</span>
-  <span id="meta-date">—</span>
-  <span>New York Teams Featured</span>
-</div>
-
-<div class="page">
-  <div id="col-left"><div class="spin-wrap"><div class="spinner"></div>Loading scores…</div></div>
-  <div id="col-right"><div class="spin-wrap"><div class="spinner"></div>Loading scores…</div></div>
-</div>
-
-<div class="footer">
-  <span>Lutheran Elementary School · Brooklyn, NY 11209 · LES — The Key to Success</span>
-  <span id="footer-date">—</span>
-  <span>Sports Page · Printed Daily for Homeroom</span>
-</div>
-
+<div class="meta-bar"><span>🏈 NFL · 🏀 NBA · ⚾ MLB · 🏒 NHL</span><span id="meta-date"></span><span>New York Teams Featured</span></div>
+<div id="note" class="note no-print"></div>
+<div class="page"><div id="col-left"><div class="spin-wrap">Loading scores…</div></div><div id="col-right"><div class="spin-wrap">Loading scores…</div></div></div>
+<div class="footer"><span>Lutheran Elementary School · Brooklyn, NY 11209 · LES — The Key to Success</span><span id="footer-date"></span>
+<span class="no-print"><a href="#" id="setkey">Set AI key</a></span></div>
 <script>
-// ── API KEY — shared with newsletter, saved in browser ──
-function getApiKey() {
-  let key = localStorage.getItem('groq_api_key');
-  if (!key) {
-    key = prompt('Enter your Groq API key (starts with gsk_...):\n\nGet one FREE at console.groq.com → API Keys\nSaved on this device only.');
-    if (key && key.trim().startsWith('gsk_')) {
-      localStorage.setItem('groq_api_key', key.trim());
-    } else {
-      alert('Invalid key — must start with gsk_. Reload to try again.');
-      return null;
-    }
+const MODELS=['llama-3.3-70b-versatile','llama-3.1-8b-instant'];
+const ESPN='https://site.api.espn.com/apis/site/v2/sports';
+const LEAGUES=[{k:'nfl',p:'football/nfl',i:'🏈',l:'NFL · Football'},{k:'nba',p:'basketball/nba',i:'🏀',l:'NBA · Basketball'},{k:'mlb',p:'baseball/mlb',i:'⚾',l:'MLB · Baseball'},{k:'nhl',p:'hockey/nhl',i:'🏒',l:'NHL · Hockey'}];
+const NY=['New York Giants','New York Jets','New York Yankees','New York Mets','New York Knicks','Brooklyn Nets','New York Rangers','New York Islanders','New Jersey Devils','Buffalo Bills'];
+const WD=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MO=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const T=new Date();
+const dateStr=`${WD[T.getDay()]}, ${MO[T.getMonth()]} ${T.getDate()}, ${T.getFullYear()}`;
+['hdr-date','meta-date','footer-date'].forEach(id=>document.getElementById(id).textContent=dateStr);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const clip=(s,n)=>s&&s.length>n?s.slice(0,n).replace(/\s+\S*$/,'')+'…':(s||'');
+const ymd=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+const shift=n=>{const d=new Date(T);d.setDate(d.getDate()+n);return d};
+const showNote=m=>{const n=document.getElementById('note');n.textContent=(n.textContent?n.textContent+' · ':'')+m};
+
+function getKey(){
+  try{
+    const u=new URLSearchParams(location.search).get('key');
+    if(u&&u.startsWith('gsk_')){localStorage.setItem('groq_api_key',u);history.replaceState(null,'',location.pathname)}
+    return localStorage.getItem('groq_api_key')
+  }catch(e){return null}
+}
+document.getElementById('setkey').onclick=e=>{e.preventDefault();const k=prompt('Groq API key (starts with gsk_):');
+  if(k&&k.trim().startsWith('gsk_')){localStorage.setItem('groq_api_key',k.trim());location.reload()}};
+
+async function getJSON(u){const r=await fetch(u);if(!r.ok)throw new Error(r.status);return r.json()}
+const fmtDay=iso=>iso?new Date(iso).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}):'';
+
+function parts(e){
+  const c=(e.competitions||[{}])[0]?.competitors||[];
+  const away=c.find(x=>x.homeAway==='away')||c[0]||{},home=c.find(x=>x.homeAway==='home')||c[1]||{};
+  return{away,home,isNY:[away,home].some(x=>NY.includes(x.team?.displayName))}
+}
+function gameRow(e){
+  const{away,home}=parts(e),st=e.status?.type?.state;
+  const a=parseInt(away.score),h=parseInt(home.score),has=st!=='pre'&&!isNaN(a)&&!isNaN(h);
+  const status=st==='in'?(e.status?.type?.shortDetail||'Live'):st==='pre'?fmtDay(e.date):'Final · '+fmtDay(e.date);
+  const side=(t,win,cls)=>`<div class="${cls} ${has?(win?'t-win':'t-loss'):''}"><div class="t-name">${esc(t.team?.shortDisplayName||t.team?.displayName||'—')}</div>${t.records?.[0]?.summary?`<div class="t-rec">${esc(t.records[0].summary)}</div>`:''}</div>`;
+  return `<div class="game">${side(away,a>h,'t-away')}<div class="score">${has?`<div class="score-num">${a}–${h}</div>`:'<div class="score-num" style="font-size:9pt;color:#aaa">vs</div>'}<span class="score-status">${esc(status)}</span></div>${side(home,h>a,'t-home')}</div>`
+}
+function summarize(sc,nw){
+  const g=(sc.events||[]).filter(e=>e.status?.type?.completed).slice(0,6).map(e=>{const{away,home}=parts(e);return `${away.team?.displayName} ${away.score} @ ${home.team?.displayName} ${home.score}`}).join(' | ')||'No recent games';
+  const h=(nw.articles||[]).slice(0,5).map(a=>a.headline+(a.description?' ('+clip(a.description,110)+')':'')).join(' | ')||'No news';
+  return{g,h}
+}
+
+async function askAI(data){
+  const k=getKey();if(!k)throw new Error('No AI key saved on this device (use "Set AI key" at the bottom).');
+  const body=LEAGUES.map(l=>`${l.k.toUpperCase()} scores: ${data[l.k].g}\n${l.k.toUpperCase()} news: ${data[l.k].h}`).join('\n\n');
+  const prompt=`Today is ${dateStr}. You write for a middle school sports page at Lutheran Elementary School in Brooklyn. Students love NY teams (Giants, Jets, Bills, Yankees, Mets, Knicks, Nets, Rangers, Islanders, Devils).\nUse ONLY the real scores and headlines below. For each league write a "rundown" (2-3 fun sentences on results and league news; mention NY teams if present) and a "watch" (one sentence on a team or player to watch, based on the data). If a league is in its off-season, say so and focus on its news. Age-appropriate for ages 11-14.\n\n${body}\n\nReturn JSON: {"nfl":{"rundown":"","watch":""},"nba":{...},"mlb":{...},"nhl":{...}}`;
+  let err;
+  for(const m of MODELS){
+    try{
+      const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+k},
+        body:JSON.stringify({model:m,temperature:.8,max_tokens:1000,response_format:{type:'json_object'},messages:[{role:'system',content:'You are a middle school sports writer. Reply with JSON only.'},{role:'user',content:prompt}]})});
+      const d=await r.json();if(d.error)throw new Error(d.error.message);
+      const t=d.choices[0].message.content;return JSON.parse(t.slice(t.indexOf('{'),t.lastIndexOf('}')+1))
+    }catch(e){err=e}
   }
-  return key;
-}
-const GROQ_KEY = getApiKey();
-
-const T = new Date();
-const WD = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const MO = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const dateStr = `${WD[T.getDay()]}, ${MO[T.getMonth()]} ${T.getDate()}, ${T.getFullYear()}`;
-document.getElementById('hdr-date').textContent = dateStr;
-document.getElementById('meta-date').textContent = dateStr;
-document.getElementById('footer-date').textContent = dateStr;
-
-const NY_TEAMS = new Set(['New York Giants','New York Jets','New York Yankees','New York Mets','New York Knicks','Brooklyn Nets','New York Rangers','New York Islanders','New Jersey Devils','Buffalo Bills']);
-
-async function fetchJSON(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(res.status);
-  return res.json();
+  throw err
 }
 
-function gameRow(event, isLive, isUpcoming=false) {
-  const comp = (event.competitions||[{}])[0];
-  const competitors = comp?.competitors || [];
-  const away = competitors.find(c=>c.homeAway==='away') || competitors[0] || {};
-  const home = competitors.find(c=>c.homeAway==='home') || competitors[1] || {};
-  const awayName = away.team?.shortDisplayName || away.team?.displayName || '—';
-  const homeName = home.team?.shortDisplayName || home.team?.displayName || '—';
-  const awayScore = away.score != null ? parseInt(away.score) : null;
-  const homeScore = home.score != null ? parseInt(home.score) : null;
-  const awayRec = away.records?.[0]?.summary || '';
-  const homeRec = home.records?.[0]?.summary || '';
-  const status = isLive ? (event.status?.displayClock||'Live') : isUpcoming ? formatDate(event.date) : 'Final';
-  const hasScore = awayScore !== null && homeScore !== null && !isUpcoming;
-  const awayWin = awayScore > homeScore;
-  const homeWin = homeScore > awayScore;
-
-  return `<div class="game">
-    <div class="t-away ${hasScore?(awayWin?'t-win':'t-loss'):''}">
-      <div class="t-name">${awayName}</div>
-      ${awayRec?`<div class="t-rec">${awayRec}</div>`:''}
-    </div>
-    <div class="score">
-      ${hasScore?`<div class="score-num">${awayScore}–${homeScore}</div>`:`<div class="score-num" style="font-size:9pt;color:#aaa;">vs</div>`}
-      <span class="score-status">${status}</span>
-    </div>
-    <div class="t-home ${hasScore?(homeWin?'t-win':'t-loss'):''}">
-      <div class="t-name">${homeName}</div>
-      ${homeRec?`<div class="t-rec">${homeRec}</div>`:''}
-    </div>
-  </div>`;
+function buildLeague(lg,sc,nw,ai){
+  let ev=(sc.events||[]).slice();
+  const sortNY=(a,b)=>(parts(b).isNY-parts(a).isNY);
+  const live=ev.filter(e=>e.status?.type?.state==='in').sort(sortNY).slice(0,2);
+  const fin=ev.filter(e=>e.status?.type?.completed).sort((a,b)=>sortNY(a,b)||new Date(b.date)-new Date(a.date)).slice(0,4);
+  const up=ev.filter(e=>e.status?.type?.state==='pre').sort((a,b)=>sortNY(a,b)||new Date(a.date)-new Date(b.date)).slice(0,3);
+  let h=`<div class="league"><div class="league-hdr"><span class="league-name">${lg.l}</span><span style="font-size:14pt">${lg.i}</span></div><div class="league-body">`;
+  if(ai?.rundown)h+=`<div class="rundown">${esc(ai.rundown)}</div>${ai.watch?`<div class="watch">👀 ${esc(ai.watch)}</div>`:''}`;
+  if(live.length)h+=`<div class="sec-lbl">Live Now</div>`+live.map(gameRow).join('');
+  if(fin.length)h+=`<div class="sec-lbl">Recent Scores</div>`+fin.map(gameRow).join('');
+  if(up.length)h+=`<div class="sec-lbl">Coming Up</div>`+up.map(gameRow).join('');
+  if(!live.length&&!fin.length&&!up.length)h+=`<div class="off">No games this week — this league may be in its off-season.</div>`;
+  const arts=(nw.articles||[]).filter(a=>a.headline).slice(0,3);
+  if(arts.length)h+=`<div class="sec-lbl">Top Stories</div>`+arts.map(a=>`<div class="hl"><b>${esc(a.headline)}</b>${a.description?`<br><span>${esc(clip(a.description,150))}</span>`:''}</div>`).join('');
+  return h+'</div></div>'
 }
 
-function formatDate(iso) {
-  if (!iso) return '';
-  return new Date(iso).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+async function loadAll(){
+  const range=`${ymd(shift(-3))}-${ymd(shift(2))}`;
+  const [s,n]=await Promise.all([
+    Promise.allSettled(LEAGUES.map(l=>getJSON(`${ESPN}/${l.p}/scoreboard?dates=${range}&limit=100`))),
+    Promise.allSettled(LEAGUES.map(l=>getJSON(`${ESPN}/${l.p}/news?limit=6`)))]);
+  const sc={},nw={},sum={};
+  LEAGUES.forEach((l,i)=>{sc[l.k]=s[i].status==='fulfilled'?s[i].value:{events:[]};nw[l.k]=n[i].status==='fulfilled'?n[i].value:{articles:[]};sum[l.k]=summarize(sc[l.k],nw[l.k])});
+  const ok=a=>a.filter(r=>r.status==='fulfilled').length;
+  if(ok(s)<4||ok(n)<4)showNote(`ESPN loaded: scores ${ok(s)}/4, headlines ${ok(n)}/4`+((s.find(r=>r.status==='rejected')||n.find(r=>r.status==='rejected')).reason?' (error '+(s.find(r=>r.status==='rejected')||n.find(r=>r.status==='rejected')).reason.message+')':''));
+  const draw=ai=>{
+    const b=k=>buildLeague(LEAGUES.find(l=>l.k===k),sc[k],nw[k],ai?.[k]);
+    document.getElementById('col-left').innerHTML=b('nfl')+b('mlb');
+    document.getElementById('col-right').innerHTML=b('nba')+b('nhl')
+  };
+  draw(null); // scores and headlines show immediately, even if the AI step fails
+  try{draw(await askAI(sum))}catch(e){console.error(e);showNote('AI summaries unavailable: '+e.message)}
 }
-
-function buildLeague(label, icon, scoreData, newsBlurb) {
-  const events = (scoreData?.events || []).slice(0,6);
-  events.sort((a,b) => {
-    const aNY = (a.competitions||[{}])[0]?.competitors?.some(c=>NY_TEAMS.has(c.team?.displayName))?-1:1;
-    const bNY = (b.competitions||[{}])[0]?.competitors?.some(c=>NY_TEAMS.has(c.team?.displayName))?-1:1;
-    return aNY-bNY;
-  });
-
-  const finished = events.filter(e=>e.status?.type?.completed);
-  const live     = events.filter(e=>e.status?.type?.state==='in');
-  const upcoming = events.filter(e=>e.status?.type?.state==='pre').slice(0,2);
-
-  let html = `<div class="league">
-    <div class="league-hdr"><span class="league-name">${label}</span><span class="league-icon">${icon}</span></div>
-    <div class="league-body">`;
-
-  if (live.length) { html += `<div class="sec-lbl">🔴 Live Now</div>`; live.slice(0,2).forEach(e => html += gameRow(e,true)); }
-  if (finished.length) { html += `<div class="sec-lbl">Recent Scores</div>`; finished.slice(0,3).forEach(e => html += gameRow(e,false)); }
-  if (upcoming.length) { html += `<div class="sec-lbl">Coming Up</div>`; upcoming.forEach(e => html += gameRow(e,false,true)); }
-  if (!finished.length && !live.length && !upcoming.length) {
-    html += `<p style="font-size:8pt;color:#999;padding:6px 0;">No games scheduled right now.</p>`;
-  }
-  if (newsBlurb) html += `<div class="news-blurb">📰 ${newsBlurb}</div>`;
-  html += `</div></div>`;
-  return html;
-}
-
-// ── HELPERS — extract scores and news headlines from ESPN data ──
-function summarizeScores(scoreData) {
-  const events = (scoreData?.events || []).filter(e => e.status?.type?.completed).slice(0, 5);
-  if (!events.length) return 'No recent games.';
-  return events.map(e => {
-    const comp = (e.competitions||[{}])[0];
-    const competitors = comp?.competitors || [];
-    const away = competitors.find(c=>c.homeAway==='away') || competitors[0] || {};
-    const home = competitors.find(c=>c.homeAway==='home') || competitors[1] || {};
-    const awayName = away.team?.displayName || '?';
-    const homeName = home.team?.displayName || '?';
-    const awayScore = away.score ?? '?';
-    const homeScore = home.score ?? '?';
-    return `${awayName} ${awayScore} @ ${homeName} ${homeScore} (Final)`;
-  }).join(' | ');
-}
-
-function summarizeNews(newsData) {
-  const articles = (newsData?.articles || []).slice(0, 6);
-  if (!articles.length) return 'No news available.';
-  return articles.map(a => a.headline).filter(Boolean).join(' | ');
-}
-
-// ── SPORTS NEWS BLURBS — Groq fed real ESPN scores + headlines ──
-async function loadSportsNews(scores, news) {
-  if (!GROQ_KEY) return { nfl:null, nba:null, mlb:null, nhl:null };
-  try {
-    const nflScores   = summarizeScores(scores.nfl);
-    const nbaScores   = summarizeScores(scores.nba);
-    const mlbScores   = summarizeScores(scores.mlb);
-    const nhlScores   = summarizeScores(scores.nhl);
-    const nflNews     = summarizeNews(news.nfl);
-    const nbaNews     = summarizeNews(news.nba);
-    const mlbNews     = summarizeNews(news.mlb);
-    const nhlNews     = summarizeNews(news.nhl);
-
-    const prompt = `Today is ${dateStr}. You are a sports writer for a middle school newspaper at Lutheran Elementary School in Brooklyn, NY. Students love New York teams (Giants, Jets, Bills, Yankees, Mets, Knicks, Nets, Rangers, Islanders, Devils).
-
-Below are REAL scores and REAL current news headlines from ESPN for each league. Use both to write an informed 2-3 sentence blurb for each league that covers recent results AND what is happening around the league right now (trades, injuries, playoff races, streaks, etc).
-
-NFL scores: ${nflScores}
-NFL news: ${nflNews}
-
-NBA scores: ${nbaScores}
-NBA news: ${nbaNews}
-
-MLB scores: ${mlbScores}
-MLB news: ${mlbNews}
-
-NHL scores: ${nhlScores}
-NHL news: ${nhlNews}
-
-Return ONLY raw JSON, no markdown, no backticks — just the JSON starting with { and ending with }.
-
-{
-  "nfl": "2-3 fun sentences covering recent NFL results AND league news. Mention NY teams if they appear in the data.",
-  "nba": "2-3 fun sentences covering recent NBA results AND league news. Mention Knicks or Nets if they appear.",
-  "mlb": "2-3 fun sentences covering recent MLB results AND league news. Mention Yankees or Mets if they appear.",
-  "nhl": "2-3 fun sentences covering recent NHL results AND league news. Mention Rangers, Islanders, or Devils if they appear."
-}
-
-Keep it fun, accurate, and age-appropriate for 11-14 year olds. Only reference things mentioned in the data above.`;
-
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROQ_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        temperature: 0.7,
-        max_tokens: 700,
-        messages: [
-          { role: 'system', content: 'You are a sports writer for a middle school newspaper. Always respond with raw JSON only — no markdown, no backticks.' },
-          { role: 'user', content: prompt }
-        ]
-      })
-    });
-
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-    const raw = data.choices?.[0]?.message?.content || '';
-    return JSON.parse(raw.replace(/```json|```/g,'').trim());
-  } catch(e) {
-    console.error('Groq sports error:', e);
-    return { nfl:null, nba:null, mlb:null, nhl:null };
-  }
-}
-
-async function loadAll() {
-  const ESPN = 'https://site.api.espn.com/apis/site/v2/sports';
-  const leagues = [
-    { key:'nfl', path:'football/nfl',   icon:'🏈', label:'NFL · Football' },
-    { key:'nba', path:'basketball/nba', icon:'🏀', label:'NBA · Basketball' },
-    { key:'mlb', path:'baseball/mlb',   icon:'⚾', label:'MLB · Baseball' },
-    { key:'nhl', path:'hockey/nhl',     icon:'🏒', label:'NHL · Hockey' },
-  ];
-
-  // Fetch scores AND news feeds in parallel
-  const [scoresResults, newsResults] = await Promise.all([
-    Promise.allSettled(leagues.map(lg => fetchJSON(`${ESPN}/${lg.path}/scoreboard`))),
-    Promise.allSettled(leagues.map(lg => fetchJSON(`${ESPN}/${lg.path}/news?limit=6`)))
-  ]);
-
-  const scores = {};
-  scoresResults.forEach((r,i) => { scores[leagues[i].key] = r.status==='fulfilled' ? r.value : {events:[]}; });
-
-  const espnNews = {};
-  newsResults.forEach((r,i) => { espnNews[leagues[i].key] = r.status==='fulfilled' ? r.value : {articles:[]}; });
-
-  // Pass both real scores AND real news headlines to Groq
-  const news = await loadSportsNews(scores, espnNews);
-
-  document.getElementById('col-left').innerHTML =
-    buildLeague('NFL · Football',  '🏈', scores.nfl,  news.nfl) +
-    buildLeague('MLB · Baseball',  '⚾', scores.mlb,  news.mlb);
-
-  document.getElementById('col-right').innerHTML =
-    buildLeague('NBA · Basketball','🏀', scores.nba,  news.nba) +
-    buildLeague('NHL · Hockey',    '🏒', scores.nhl,  news.nhl);
-}
-
 loadAll();
-</script>
-</body>
-</html>
+</script></body></html>
