@@ -49,9 +49,11 @@ hr.div{border:none;border-top:1px solid #ddd;margin:6px 0}
 const MODELS=['llama-3.3-70b-versatile','llama-3.1-8b-instant'];
 // Edit this list to change sources. take = items considered, quota = stories printed.
 const FEEDS=[
- {sec:'us',  url:'https://feeds.npr.org/1001/rss.xml',take:7,quota:3},
- {sec:'world',url:'https://feeds.bbci.co.uk/news/world/rss.xml',take:5,quota:2},
- {sec:'sci', url:'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml',take:5,quota:2}];
+ {sec:'us',  url:'https://feeds.bbci.co.uk/newsround/rss.xml',take:10,quota:3},
+ {sec:'world',url:'https://feeds.bbci.co.uk/news/entertainment_and_arts/rss.xml',take:8,quota:2},
+ {sec:'sci', url:'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml',take:8,quota:2}];
+// Any story whose title or summary contains one of these words is dropped. Add your own.
+const BLOCK=/\b(wars?|warfare|ukrain\w*|gaza|israel\w*|hamas|russia\w*|putin|missiles?|troops|military|invasion|ceasefire|airstrikes?|hostages?|killed|killing|shooting|murder\w*|trump|biden|congress|senate|elections?|scandal|indict\w*|lawsuit|sued|fraud|arrest\w*|charged|trial|investigation|nvidia|ceo|epstein|abuse|assault|terror\w*|bomb\w*|attacks?|prison|jailed)\b/i;
 const Q=Object.fromEntries(FEEDS.map(f=>[f.sec,f.quota]));
 const LAT=40.62,LON=-74.03; // Bay Ridge / 11209
 const WD=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -74,7 +76,7 @@ $('newed').onclick=e=>{e.preventDefault();try{localStorage.removeItem(dayKey)}ca
 async function askAI(c){
  const k=getKey();if(!k)throw new Error('No AI key saved on this device (use "Set AI key" at the bottom).');
  const list=c.map((x,i)=>`[${i}] (${x.sec}) ${x.title} — ${x.desc}`).join('\n');
- const prompt=`Today is ${dateStr}. You edit a school newspaper for students ages 11-14 at Lutheran Elementary School in Brooklyn, NY.\nBelow are real news items. Choose the most interesting, age-appropriate ones and rewrite each as a short story at a 6th-8th grade reading level. Max stories per section: ${Object.entries(Q).map(([s,n])=>s+' '+n).join(', ')}. Skip anything graphic, violent, or inappropriate for children. Use ONLY facts from the items; do not invent details. Each story: a headline (under 12 words) and a body of 45-60 words (the first "us" story may be 70-90).\n\n${list}\n\nReturn JSON only: {"stories":[{"i":0,"headline":"","body":""}]}`;
+ const prompt=`Today is ${dateStr}. You edit a school newspaper for students ages 11-14 at Lutheran Elementary School in Brooklyn, NY.\nBelow are real news items. Choose the most interesting, age-appropriate ones and rewrite each as a short story at a 6th-8th grade reading level. Max stories per section: ${Object.entries(Q).map(([s,n])=>s+' '+n).join(', ')}. Prefer science, animals, space, technology for kids, arts, school, inventions, records, and uplifting stories. Skip anything about war, conflict, politics, crime, court cases, scandals, company executives, or anything graphic or upsetting. Use ONLY facts from the items; do not invent details. Each story: a headline (under 12 words) and a body of 45-60 words (the first "us" story may be 70-90).\n\n${list}\n\nReturn JSON only: {"stories":[{"i":0,"headline":"","body":""}]}`;
  let err;
  for(const m of MODELS){try{
   const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+k},
@@ -90,7 +92,7 @@ async function buildEdition(){
  Object.keys(seen).forEach(t=>{if(seen[t]<cut)delete seen[t]});
  const c=[];
  res.forEach((r,i)=>{if(r.status!=='fulfilled'||r.value.status!=='ok')return;
-  r.value.items.filter(it=>!seen[it.title]).slice(0,FEEDS[i].take).forEach(it=>c.push({sec:FEEDS[i].sec,title:it.title,desc:clip(txt(it.description),400)}))});
+  r.value.items.filter(it=>!seen[it.title]&&!BLOCK.test(it.title+' '+txt(it.description))).slice(0,FEEDS[i].take).forEach(it=>c.push({sec:FEEDS[i].sec,title:it.title,desc:clip(txt(it.description),400)}))});
  if(!c.length)throw new Error('No news feeds responded (the feed converter may be busy). Try again in a minute.');
  const out={us:[],world:[],sci:[]},add=(x,h,b)=>{if(out[x.sec].length<Q[x.sec]&&!out[x.sec].some(s=>s.src===x.title))out[x.sec].push({h,b,src:x.title})};
  try{(await askAI(c)).forEach(s=>{const x=c[s.i];if(x&&s.headline&&s.body)add(x,s.headline,s.body)})}catch(e){console.error(e);note('AI rewriting unavailable ('+e.message+'). Showing original summaries.')}
@@ -118,12 +120,12 @@ async function main(){
   try{ed={stories:await buildEdition()};ed.otd=await getOTD().catch(()=>[]);ls.set(dayKey,ed)}
   catch(e){note(e.message);$('page').innerHTML='<div class="col" style="grid-column:1/-1;text-align:center;color:#777;padding:30px">Today\'s stories couldn\'t load. Check the note at the top of the page, then choose "New edition" at the bottom.</div>';return}
  }
- const S=ed.stories,lead=S.us[0];
+ const S=ed.stories,lead=S.us[0]||S.sci.shift();
  const otd=(ed.otd||[]).length?`<div class="section-head">On This Day</div>`+ed.otd.map(e=>`<div class="otd"><b>${e.y}:</b> ${esc(clip(e.t,200))}</div>`).join(''):'';
  const weather=await getWeather().catch(()=>'');
  $('page').innerHTML=
   `<div class="col"><div class="section-head">Top Story</div>${lead?story(lead,true):''}${sec('In the News',S.us.slice(1))}</div><div class="col-divider"></div>`+
   `<div class="col">${sec('Science &amp; Nature',S.sci)}${otd}</div><div class="col-divider"></div>`+
-  `<div class="col">${weather}${sec('Around the World',S.world)}</div>`}
+  `<div class="col">${weather}${sec('Arts &amp; Culture',S.world)}</div>`}
 main();
 </script></body></html>
