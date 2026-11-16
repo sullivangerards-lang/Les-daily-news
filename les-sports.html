@@ -51,7 +51,10 @@ body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georg
 <div class="footer"><span>Lutheran Elementary School · Brooklyn, NY 11209 · LES — The Key to Success</span><span id="footer-date"></span>
 <span class="no-print"><a href="#" id="setkey">Set AI key</a></span></div>
 <script>
-const MODELS=['llama-3.3-70b-versatile','llama-3.1-8b-instant'];
+async function pickModels(k){const r=await fetch('https://api.groq.com/openai/v1/models',{headers:{Authorization:'Bearer '+k}});const d=await r.json();if(d.error)throw new Error(d.error.message);
+const ids=(d.data||[]).map(m=>m.id).filter(i=>!/whisper|guard|tts|orpheus|embed|playai|safeguard/i.test(i));
+const first=[/llama-3\.3-70b/,/llama-4/,/qwen/,/gpt-oss-120b/,/gpt-oss-20b/,/llama-3\.1-8b/],o=[];
+first.forEach(p=>ids.forEach(i=>{if(p.test(i)&&!o.includes(i))o.push(i)}));ids.forEach(i=>{if(!o.includes(i))o.push(i)});return o.slice(0,4)}
 const ESPN='https://site.api.espn.com/apis/site/v2/sports';
 const LEAGUES=[{k:'nfl',p:'football/nfl',i:'🏈',l:'NFL · Football'},{k:'nba',p:'basketball/nba',i:'🏀',l:'NBA · Basketball'},{k:'mlb',p:'baseball/mlb',i:'⚾',l:'MLB · Baseball'},{k:'nhl',p:'hockey/nhl',i:'🏒',l:'NHL · Hockey'}];
 const NY=['New York Giants','New York Jets','New York Yankees','New York Mets','New York Knicks','Brooklyn Nets','New York Rangers','New York Islanders','New Jersey Devils','Buffalo Bills'];
@@ -102,13 +105,13 @@ async function askAI(data){
   const body=LEAGUES.map(l=>`${l.k.toUpperCase()} scores: ${data[l.k].g}\n${l.k.toUpperCase()} news: ${data[l.k].h}`).join('\n\n');
   const prompt=`Today is ${dateStr}. You write for a middle school sports page at Lutheran Elementary School in Brooklyn. Students love NY teams (Giants, Jets, Bills, Yankees, Mets, Knicks, Nets, Rangers, Islanders, Devils).\nUse ONLY the real scores and headlines below. For each league write a "rundown" (2-3 fun sentences on results and league news; mention NY teams if present) and a "watch" (one sentence on a team or player to watch, based on the data). If a league is in its off-season, say so and focus on its news. Age-appropriate for ages 11-14.\n\n${body}\n\nReturn JSON: {"nfl":{"rundown":"","watch":""},"nba":{...},"mlb":{...},"nhl":{...}}`;
   let err;
-  for(const m of MODELS){
+  for(const m of await pickModels(k)){
     try{
       const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+k},
-        body:JSON.stringify({model:m,temperature:.8,max_tokens:1000,response_format:{type:'json_object'},messages:[{role:'system',content:'You are a middle school sports writer. Reply with JSON only.'},{role:'user',content:prompt}]})});
+        body:JSON.stringify({model:m,temperature:.8,max_tokens:2500,...(/gpt-oss/.test(m)?{reasoning_effort:'low'}:{}),messages:[{role:'system',content:'You are a middle school sports writer. Reply with JSON only.'},{role:'user',content:prompt}]})});
       const d=await r.json();if(d.error)throw new Error(d.error.message);
       const t=d.choices[0].message.content;return JSON.parse(t.slice(t.indexOf('{'),t.lastIndexOf('}')+1))
-    }catch(e){err=e}
+    }catch(e){err=new Error((err?err.message+' | ':'')+m+': '+e.message)}
   }
   throw err
 }
@@ -133,7 +136,7 @@ function buildLeague(lg,sc,nw,ai){
 async function loadAll(){
   const range=`${ymd(shift(-3))}-${ymd(shift(2))}`;
   const [s,n]=await Promise.all([
-    Promise.allSettled(LEAGUES.map(l=>getJSON(`${ESPN}/${l.p}/scoreboard?dates=${range}&limit=100`))),
+    Promise.allSettled(LEAGUES.map(l=>getJSON(`${ESPN}/${l.p}/scoreboard?dates=${range}`).catch(()=>getJSON(`${ESPN}/${l.p}/scoreboard`)))),
     Promise.allSettled(LEAGUES.map(l=>getJSON(`${ESPN}/${l.p}/news?limit=6`)))]);
   const sc={},nw={},sum={};
   LEAGUES.forEach((l,i)=>{sc[l.k]=s[i].status==='fulfilled'?s[i].value:{events:[]};nw[l.k]=n[i].status==='fulfilled'?n[i].value:{articles:[]};sum[l.k]=summarize(sc[l.k],nw[l.k])});
