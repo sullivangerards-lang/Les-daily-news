@@ -1,37 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Middle School Messenger – LES</title>
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-  :root { --navy:#1a2f6e; --gold:#c9a84c; --cream:#faf8f3; --ink:#1c1c1c; }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--cream); color:var(--ink); font-family:'Source Serif 4',Georgia,serif; font-size:10pt; line-height:1.5; }
+:root{--navy:#1a2f6e;--gold:#c9a84c;--cream:#faf8f3;--ink:#1c1c1c}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georgia,serif;font-size:10pt;line-height:1.5}
+.masthead{border-top:4px solid var(--navy);border-bottom:4px solid var(--navy);padding:8px 16px 6px;text-align:center}
+.masthead-top{display:flex;justify-content:space-between;font-size:7.5pt;color:var(--navy);margin-bottom:2px}
+.masthead h1{font-family:'UnifrakturMaguntia',cursive;font-size:38pt;color:var(--navy);line-height:1;font-weight:400}
+.tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:8.5pt;color:#555;letter-spacing:3px;text-transform:uppercase;margin-top:2px}
+.rule-gold{height:2px;background:var(--gold);margin:4px 0}
+.meta-bar{display:flex;justify-content:space-between;padding:4px 16px;background:var(--navy);color:#fff;font-size:7.5pt}
+.note{font-size:7pt;color:#a33;padding:2px 16px}
+.page{padding:10px 16px;display:grid;grid-template-columns:1fr 2px 1fr 2px 1fr}
+.col-divider{background:var(--navy);margin:0 8px;opacity:.2}
+.col{padding:0 6px}
+.section-head{font-family:'Playfair Display',serif;font-size:8pt;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--navy);border-bottom:1.5px solid var(--navy);padding-bottom:2px;margin:10px 0 5px}
+.section-head:first-child{margin-top:0}
+.story{margin-bottom:8px}
+.story-headline{font-family:'Playfair Display',serif;font-size:10.5pt;font-weight:700;line-height:1.2;margin-bottom:2px}
+.story-headline.lg{font-size:14pt}
+.story-body{font-size:8.5pt;line-height:1.55;color:#2a2a2a;text-align:justify;hyphens:auto}
+.story-body.lg{font-size:9pt}
+hr.div{border:none;border-top:1px solid #ddd;margin:6px 0}
+.weather-box{border:1.5px solid var(--navy);padding:6px 8px;margin-bottom:8px;background:#fff}
+.w-location{font-size:7pt;text-transform:uppercase;letter-spacing:1.5px;color:#888;margin-bottom:2px}
+.w-main{font-family:'Playfair Display',serif;font-size:18pt;font-weight:700;color:var(--navy);line-height:1}
+.w-desc{font-size:8pt;color:#555;margin-top:2px}
+.otd{font-size:8.5pt;line-height:1.5;margin-bottom:5px}
+.otd b{font-family:'Playfair Display',serif;color:var(--navy)}
+.footer{border-top:3px double var(--navy);padding:4px 16px;display:flex;justify-content:space-between;font-size:7pt;color:#666}
+.footer a{color:#666;margin-left:10px}
+@media(max-width:700px){.page{display:block}.col-divider{display:none}.col{margin-bottom:12px}}
+@media print{body{background:#fff}.no-print{display:none}@page{margin:.5in;size:letter}}
+</style></head><body>
+<div class="masthead">
+<div class="masthead-top"><span>Lutheran Elementary School · Brooklyn, NY 11209</span><span id="hdr-date"></span></div>
+<h1>The Middle School Messenger</h1>
+<div class="tagline">News for curious students</div></div>
+<div class="rule-gold"></div>
+<div class="meta-bar"><span>Daily Edition</span><span>LES — The Key to Success</span><span id="meta-date"></span></div>
+<div id="note" class="note no-print"></div>
+<div class="page" id="page"><div class="col" style="grid-column:1/-1;text-align:center;color:#999">Loading today's edition…</div></div>
+<div class="footer"><span>Printed daily for homeroom</span>
+<span class="no-print"><a href="#" id="newed">New edition</a><a href="#" id="setkey">Set AI key</a></span></div>
+<script>
+const MODELS=['llama-3.3-70b-versatile','llama-3.1-8b-instant'];
+// Edit this list to change sources. take = items considered, quota = stories printed.
+const FEEDS=[
+ {sec:'us',  url:'https://feeds.npr.org/1001/rss.xml',take:7,quota:3},
+ {sec:'world',url:'https://feeds.bbci.co.uk/news/world/rss.xml',take:5,quota:2},
+ {sec:'sci', url:'https://feeds.bbci.co.uk/news/science_and_environment/rss.xml',take:5,quota:2}];
+const Q=Object.fromEntries(FEEDS.map(f=>[f.sec,f.quota]));
+const LAT=40.62,LON=-74.03; // Bay Ridge / 11209
+const WD=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MO=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const T=new Date(),dateStr=`${WD[T.getDay()]}, ${MO[T.getMonth()]} ${T.getDate()}, ${T.getFullYear()}`;
+const dayKey='edition_'+T.getFullYear()+(T.getMonth()+1)+'_'+T.getDate();
+['hdr-date','meta-date'].forEach(i=>document.getElementById(i).textContent=dateStr);
+const $=id=>document.getElementById(id),note=m=>$('note').textContent=m;
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const clip=(s,n)=>s&&s.length>n?s.slice(0,n).replace(/\s+\S*$/,'')+'…':(s||'');
+const txt=h=>(new DOMParser().parseFromString(h||'','text/html').body.textContent||'').trim();
+const ls={get:k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const getJSON=async u=>{const r=await fetch(u);if(!r.ok)throw new Error(r.status);return r.json()};
+function getKey(){try{const u=new URLSearchParams(location.search).get('key');
+ if(u&&u.startsWith('gsk_')){localStorage.setItem('groq_api_key',u);history.replaceState(null,'',location.pathname)}
+ return localStorage.getItem('groq_api_key')}catch(e){return null}}
+$('setkey').onclick=e=>{e.preventDefault();const k=prompt('Groq API key (starts with gsk_):');if(k&&k.trim().startsWith('gsk_')){localStorage.setItem('groq_api_key',k.trim());location.reload()}};
+$('newed').onclick=e=>{e.preventDefault();try{localStorage.removeItem(dayKey)}catch(x){}location.reload()};
 
-  .masthead { border-top:4px solid var(--navy); border-bottom:4px solid var(--navy); padding:8px 16px 6px; text-align:center; }
-  .masthead-top { display:flex; justify-content:space-between; font-size:7.5pt; color:var(--navy); margin-bottom:2px; }
-  .masthead h1 { font-family:'UnifrakturMaguntia',cursive; font-size:38pt; color:var(--navy); line-height:1; }
-  .masthead .tagline { font-family:'Playfair Display',serif; font-style:italic; font-size:8.5pt; color:#555; letter-spacing:3px; text-transform:uppercase; margin-top:2px; }
-  .rule-gold { height:2px; background:var(--gold); margin:4px 0; }
+async function askAI(c){
+ const k=getKey();if(!k)throw new Error('No AI key saved on this device (use "Set AI key" at the bottom).');
+ const list=c.map((x,i)=>`[${i}] (${x.sec}) ${x.title} — ${x.desc}`).join('\n');
+ const prompt=`Today is ${dateStr}. You edit a school newspaper for students ages 11-14 at Lutheran Elementary School in Brooklyn, NY.\nBelow are real news items. Choose the most interesting, age-appropriate ones and rewrite each as a short story at a 6th-8th grade reading level. Max stories per section: ${Object.entries(Q).map(([s,n])=>s+' '+n).join(', ')}. Skip anything graphic, violent, or inappropriate for children. Use ONLY facts from the items; do not invent details. Each story: a headline (under 12 words) and a body of 45-60 words (the first "us" story may be 70-90).\n\n${list}\n\nReturn JSON only: {"stories":[{"i":0,"headline":"","body":""}]}`;
+ let err;
+ for(const m of MODELS){try{
+  const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+k},
+   body:JSON.stringify({model:m,temperature:.6,max_tokens:1800,response_format:{type:'json_object'},messages:[{role:'system',content:'You are a careful school newspaper editor. Reply with JSON only.'},{role:'user',content:prompt}]})});
+  const d=await r.json();if(d.error)throw new Error(d.error.message);
+  const t=d.choices[0].message.content;return JSON.parse(t.slice(t.indexOf('{'),t.lastIndexOf('}')+1)).stories||[]
+ }catch(e){err=e}}
+ throw err}
 
-  .meta-bar { display:flex; justify-content:space-between; padding:4px 16px; background:var(--navy); color:white; font-size:7.5pt; }
+async function buildEdition(){
+ const res=await Promise.allSettled(FEEDS.map(f=>getJSON('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(f.url))));
+ const seen=ls.get('news_seen')||{},cut=Date.now()-10*864e5;
+ Object.keys(seen).forEach(t=>{if(seen[t]<cut)delete seen[t]});
+ const c=[];
+ res.forEach((r,i)=>{if(r.status!=='fulfilled'||r.value.status!=='ok')return;
+  r.value.items.filter(it=>!seen[it.title]).slice(0,FEEDS[i].take).forEach(it=>c.push({sec:FEEDS[i].sec,title:it.title,desc:clip(txt(it.description),400)}))});
+ if(!c.length)throw new Error('No news feeds responded (the feed converter may be busy). Try again in a minute.');
+ const out={us:[],world:[],sci:[]},add=(x,h,b)=>{if(out[x.sec].length<Q[x.sec]&&!out[x.sec].some(s=>s.src===x.title))out[x.sec].push({h,b,src:x.title})};
+ try{(await askAI(c)).forEach(s=>{const x=c[s.i];if(x&&s.headline&&s.body)add(x,s.headline,s.body)})}catch(e){console.error(e);note('AI rewriting unavailable ('+e.message+'). Showing original summaries.')}
+ if(!Object.values(out).some(a=>a.length))c.forEach(x=>add(x,x.title,x.desc));
+ Object.values(out).flat().forEach(s=>seen[s.src]=Date.now());
+ ls.set('news_seen',seen);return out}
 
-  .page { padding:10px 16px; display:grid; grid-template-columns:1fr 2px 1fr 2px 1fr; }
-  .col-divider { background:var(--navy); margin:0 8px; opacity:0.2; }
-  .col { padding:0 6px; }
+const BAD=/kill|massacre|murder|assassinat|execut|bomb|attack|genocide|shot|suicide|rape|terror|slaughter|torture|hostage/i;
+async function getOTD(){
+ const r=await getJSON(`https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/events/${String(T.getMonth()+1).padStart(2,'0')}/${String(T.getDate()).padStart(2,'0')}`);
+ const ev=(r.events||[]).filter(e=>e.text&&e.year&&!BAD.test(e.text)&&e.text.length<220).sort(()=>Math.random()-.5).slice(0,3).sort((a,b)=>a.year-b.year);
+ return ev.map(e=>({y:e.year,t:e.text}))}
 
-  .section-head { font-family:'Playfair Display',serif; font-size:8pt; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--navy); border-bottom:1.5px solid var(--navy); padding-bottom:2px; margin-bottom:5px; margin-top:8px; }
-  .section-head:first-child { margin-top:0; }
+const WC=c=>c===0?'Clear':c<=2?'Partly cloudy':c===3?'Overcast':c<=48?'Foggy':c<=57?'Drizzle':c<=67?'Rain':c<=77?'Snow':c<=82?'Showers':c<=86?'Snow showers':'Thunderstorms';
+async function getWeather(){
+ const w=await getJSON(`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&timezone=America%2FNew_York&forecast_days=1`);
+ return `<div class="weather-box"><div class="w-location">Brooklyn, NY 11209</div><div class="w-main">${Math.round(w.current.temperature_2m)}°F</div><div class="w-desc">${WC(w.current.weather_code)} · High ${Math.round(w.daily.temperature_2m_max[0])}° / Low ${Math.round(w.daily.temperature_2m_min[0])}° · ${w.daily.precipitation_probability_max[0]}% chance of precipitation</div></div>`}
 
-  .story { margin-bottom:8px; }
-  .story-headline { font-family:'Playfair Display',serif; font-size:10.5pt; font-weight:700; line-height:1.2; margin-bottom:2px; }
-  .story-headline.lg { font-size:13pt; }
-  .story-body { font-size:8.5pt; line-height:1.55; color:#2a2a2a; text-align:justify; hyphens:auto; }
-  hr.div { border:none; border-top:1px solid #ddd; margin:6px 0; }
+const story=(s,lg)=>`<div class="story"><div class="story-headline ${lg?'lg':''}">${esc(s.h)}</div><div class="story-body ${lg?'lg':''}">${esc(s.b)}</div></div>`;
+const sec=(t,a)=>a.length?`<div class="section-head">${t}</div>`+a.map((s,i)=>story(s,false)).join('<hr class="div">'):'';
 
-  .weather-box { border:1.5px solid var(--navy); padding:6px 8px; margin-bottom:8px; background:white; }
-  .w-location { font-size:7pt; text-transform:uppercase; letter-spacing:1.5px; color:#888; margin-bottom:2px; }
-  .w-main { font-family:'Playfair Display',serif; font-size:18pt; font-weight:700; color:var(--navy); line-height:1; }
-  .w-desc { font-size:8pt; color:#555; margin-top:2px; }
+async function main(){
+ let ed=ls.get(dayKey);
+ if(!ed){
+  try{ed={stories:await buildEdition()};ed.otd=await getOTD().catch(()=>[]);ls.set(dayKey,ed)}
+  catch(e){note(e.message);$('page').innerHTML='<div class="col" style="grid-column:1/-1;text-align:center;color:#777;padding:30px">Today\'s stories couldn\'t load. Check the note at the top of the page, then choose "New edition" at the bottom.</div>';return}
+ }
+ const S=ed.stories,lead=S.us[0];
+ const otd=(ed.otd||[]).length?`<div class="section-head">On This Day</div>`+ed.otd.map(e=>`<div class="otd"><b>${e.y}:</b> ${esc(clip(e.t,200))}</div>`).join(''):'';
+ const weather=await getWeather().catch(()=>'');
+ $('page').innerHTML=
+  `<div class="col"><div class="section-head">Top Story</div>${lead?story(lead,true):''}${sec('In the News',S.us.slice(1))}</div><div class="col-divider"></div>`+
+  `<div class="col">${sec('Science &amp; Nature',S.sci)}${otd}</div><div class="col-divider"></div>`+
+  `<div class="col">${weather}${sec('Around the World',S.world)}</div>`}
+main();
+</script></body></html>
