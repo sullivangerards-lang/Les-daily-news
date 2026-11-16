@@ -9,39 +9,40 @@
 :root{--navy:#1a2f6e;--gold:#c9a84c;--cream:#faf8f3;--ink:#1c1c1c;--win:#1a6e2f;--loss:#888}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georgia,serif;font-size:9.5pt}
-.masthead{background:var(--navy);padding:7px 16px;display:flex;align-items:center;justify-content:space-between}
-.masthead h1{font-family:'Oswald',sans-serif;font-size:21pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff}
+.masthead{background:var(--navy);padding:6px 16px;display:flex;align-items:center;justify-content:space-between}
+.masthead h1{font-family:'Oswald',sans-serif;font-size:20pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff}
 .masthead h1 span{color:var(--gold)}
-.sub{font-size:7.5pt;color:#aac;text-align:right;line-height:1.5}
+.sub{font-size:7.5pt;color:#aac;text-align:right;line-height:1.45}
 .gold-bar{height:4px;background:var(--gold)}
 .meta-bar{display:flex;justify-content:space-between;padding:3px 16px;background:#f0f3fa;border-bottom:1px solid #ddd;font-size:7.5pt;color:var(--navy);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px}
 .page{padding:8px 14px 4px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .league{border:1px solid #ddd;background:#fff;margin-bottom:8px;break-inside:avoid}
 .league-hdr{background:var(--navy);color:#fff;padding:3px 10px;display:flex;justify-content:space-between;align-items:center}
 .league-name{font-family:'Oswald',sans-serif;font-size:10.5pt;font-weight:600;text-transform:uppercase;letter-spacing:1.5px}
-.league-body{padding:6px 8px}
-.sec-lbl{font-family:'Oswald',sans-serif;font-size:7pt;text-transform:uppercase;letter-spacing:2px;color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:2px;margin:6px 0 4px}
+.league-body{padding:5px 8px}
+.sec-lbl{font-family:'Oswald',sans-serif;font-size:7pt;text-transform:uppercase;letter-spacing:2px;color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:2px;margin:5px 0 4px}
 .sec-lbl:first-child{margin-top:0}
-.game{display:grid;grid-template-columns:1fr 58px 1fr;align-items:center;padding:2px 0;border-bottom:1px dotted #eee;font-size:8pt;gap:3px}
+.game{display:grid;grid-template-columns:1fr 56px 1fr;align-items:center;padding:2px 0;border-bottom:1px dotted #eee;font-size:7.8pt;gap:3px}
 .game:last-child{border-bottom:none}
 .t-away{text-align:right}
-.t-name{font-family:'Oswald',sans-serif;font-size:8.5pt;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
-.t-rec{font-size:6.5pt;color:#aaa}
+.t-name{font-family:'Oswald',sans-serif;font-size:8.3pt;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.t-rec{font-size:6.2pt;color:#aaa}
 .t-win .t-name{color:var(--win)}.t-loss .t-name{color:var(--loss)}
 .score{text-align:center}
-.score-num{font-family:'Oswald',sans-serif;font-size:12pt;font-weight:700;color:var(--navy);line-height:1}
+.score-num{font-family:'Oswald',sans-serif;font-size:11.5pt;font-weight:700;color:var(--navy);line-height:1}
 .score-status{display:block;font-size:6pt;color:#999}
-.rundown{font-size:8.3pt;line-height:1.45;color:#333}
-.watch{font-size:7.8pt;margin-top:3px;color:var(--navy);font-weight:600}
+.rundown{font-size:8.2pt;line-height:1.42;color:#333}
+.watch{font-size:7.6pt;margin-top:3px;color:var(--navy);font-weight:600}
 
-/* Standings Tables */
-.st-grid{display:grid;grid-template-columns:1fr;gap:6px}
-.st-grid.two-col{grid-template-columns:1fr 1fr;gap:8px}
-.st-table{width:100%;border-collapse:collapse;font-size:7.5pt}
-.st-table th{font-family:'Oswald',sans-serif;font-size:6.5pt;text-transform:uppercase;color:#777;border-bottom:1px solid #ddd;padding:1px 3px;text-align:right}
+/* Standings Side-by-Side Grid */
+.st-split{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:start}
+.st-stack{display:flex;flex-direction:column;gap:5px}
+.st-table{width:100%;border-collapse:collapse;font-size:7.2pt}
+.st-table th{font-family:'Oswald',sans-serif;font-size:6.4pt;text-transform:uppercase;color:#777;border-bottom:1px solid #ddd;padding:1px 2px;text-align:right}
 .st-table th:first-child{text-align:left;color:var(--navy)}
-.st-table td{padding:2px 3px;border-bottom:1px dotted #eee;text-align:right;color:#444}
+.st-table td{padding:1.5px 2px;border-bottom:1px dotted #eee;text-align:right;color:#444}
 .st-table td:first-child{text-align:left;font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.2px}
+.st-rank{color:#999;font-size:6.5pt;margin-right:2px}
 .st-table tr.ny-row td{font-weight:700;color:var(--navy);background:#f4f7fc}
 .st-table tr.ny-row td:first-child{color:var(--win)}
 
@@ -52,24 +53,24 @@ body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georg
 .off{font-size:7.8pt;color:#888;padding:2px 0 4px}
 
 /* Trivia & End-of-Day Answer Key */
-.trivia-wrap{padding:0 14px 8px}
+.trivia-wrap{padding:0 14px 6px}
 .trivia-box{border:1.5px solid var(--navy);background:#fff;break-inside:avoid}
 .trivia-hdr{background:var(--navy);color:#fff;padding:3px 10px;display:flex;justify-content:space-between;align-items:center;font-family:'Oswald',sans-serif;font-size:9.5pt;letter-spacing:1.2px;text-transform:uppercase}
 .trivia-hdr span{color:var(--gold);font-size:7.5pt;letter-spacing:.5px}
-.trivia-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;padding:7px 10px}
-.tq{font-size:8pt;line-height:1.4;color:#222}
-.tq b{font-family:'Oswald',sans-serif;color:var(--navy);text-transform:uppercase;font-size:8pt;margin-right:4px}
+.trivia-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px 14px;padding:6px 10px}
+.tq{font-size:7.8pt;line-height:1.38;color:#222}
+.tq b{font-family:'Oswald',sans-serif;color:var(--navy);text-transform:uppercase;font-size:7.8pt;margin-right:4px}
 
-.ans-cut{margin:4px 14px 6px;border-top:1.5px dashed #999;padding-top:4px;display:flex;justify-content:space-between;align-items:center;break-inside:avoid}
+.ans-cut{margin:3px 14px 5px;border-top:1.5px dashed #999;padding-top:4px;display:flex;justify-content:space-between;align-items:center;break-inside:avoid}
 .ans-label{font-family:'Oswald',sans-serif;font-size:7pt;text-transform:uppercase;letter-spacing:1px;color:#777}
-.ans-text{font-size:7.5pt;color:#333;transform:rotate(180deg);display:inline-block;text-align:right}
+.ans-text{font-size:7.4pt;color:#333;transform:rotate(180deg);display:inline-block;text-align:right}
 .ans-text.upright{transform:none}
 
 .note{font-size:7pt;color:#a33;padding:2px 16px}
 .spin-wrap{font-size:8pt;color:#999;padding:12px;text-align:center}
-.footer{border-top:2px double var(--navy);padding:4px 16px;display:flex;justify-content:space-between;font-size:7pt;color:#666}
+.footer{border-top:2px double var(--navy);padding:3px 16px;display:flex;justify-content:space-between;font-size:7pt;color:#666}
 .footer a{color:#666}
-@media print{body{background:#fff}.no-print{display:none}@page{margin:.35in;size:letter}}
+@media print{body{background:#fff}.no-print{display:none}@page{margin:.32in;size:letter}}
 </style>
 </head>
 <body>
@@ -84,7 +85,7 @@ body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georg
 <div class="meta-bar">
   <span>🏈 NFL · 🏀 NBA · ⚾ MLB · 🏒 NHL</span>
   <span id="meta-date"></span>
-  <span>NY Standings &amp; Daily Trivia</span>
+  <span>Division &amp; League Standings · Daily Trivia</span>
 </div>
 <div id="note" class="note no-print"></div>
 
@@ -192,47 +193,71 @@ function gameRow(e){
   return `<div class="game">${side(away,a>h,'t-away')}<div class="score">${has?`<div class="score-num">${a}–${h}</div>`:'<div class="score-num" style="font-size:9pt;color:#aaa">vs</div>'}<span class="score-status">${esc(status)}</span></div>${side(home,h>a,'t-home')}</div>`
 }
 
-/* Parse ESPN v2 standings JSON into NY-relevant divisions */
+/* Extract row stats consistently */
+function mapEntry(en, isNHL){
+  const tm=en.team||{};
+  const stats={};
+  (en.stats||[]).forEach(s=>{stats[s.name]=s.displayValue??s.value});
+  const rec=isNHL
+    ? `${stats.wins??0}-${stats.losses??0}-${stats.otLosses??0}`
+    : `${stats.wins??0}-${stats.losses??0}${stats.ties&&stats.ties!=='0'?'-'+stats.ties:''}`;
+  const pct=Number(stats.winPercent??0);
+  const pts=Number(stats.points??0);
+  const extra=isNHL?(pts+' pts'):(pct?pct.toFixed(3).replace(/^0/,''):'');
+  return{
+    id:tm.id||tm.displayName,
+    name:tm.shortDisplayName||tm.displayName||'—',
+    fullName:tm.displayName||'',
+    rec,
+    extra,
+    sortVal:isNHL?pts:pct
+  };
+}
+
+/* Parse BOTH NY-relevant divisions AND overall league leaders */
 function parseStandings(raw, targetDivs, isNHL){
-  const found=[];
+  const divs=[];
+  const allTeams=new Map();
+
   function walk(node){
     if(!node)return;
     const name=node.name||node.shortName||'';
-    if(node.standings?.entries && targetDivs.some(d=>name.toLowerCase().includes(d.toLowerCase()))){
-      const rows=node.standings.entries.map(en=>{
-        const tm=en.team||{};
-        const stats={};
-        (en.stats||[]).forEach(s=>{stats[s.name]=s.displayValue??s.value});
-        const rec=isNHL
-          ? `${stats.wins??0}-${stats.losses??0}-${stats.otLosses??0}`
-          : `${stats.wins??0}-${stats.losses??0}${stats.ties&&stats.ties!=='0'?'-'+stats.ties:''}`;
-        const extra=isNHL?(stats.points??'0')+' pts':(stats.gamesBehind&&stats.gamesBehind!=='-'?stats.gamesBehind+' GB':(stats.winPercent?Number(stats.winPercent).toFixed(3).replace(/^0/,''):''));
-        return{
-          name:tm.shortDisplayName||tm.displayName||'—',
-          fullName:tm.displayName||'',
-          rec,
-          extra,
-          sortVal:isNHL?Number(stats.points??0):Number(stats.winPercent??0)
-        };
-      }).sort((a,b)=>b.sortVal-a.sortVal);
-      found.push({divName:name,rows});
+    if(node.standings?.entries){
+      const mapped=node.standings.entries.map(en=>mapEntry(en,isNHL));
+      mapped.forEach(r=>{if(!allTeams.has(r.id))allTeams.set(r.id,r)});
+      if(targetDivs.some(d=>name.toLowerCase().includes(d.toLowerCase()))){
+        divs.push({divName:name,rows:[...mapped].sort((a,b)=>b.sortVal-a.sortVal)});
+      }
     }
     (node.children||[]).forEach(walk);
   }
   walk(raw);
-  return found;
+
+  const leagueTop=[...allTeams.values()].sort((a,b)=>b.sortVal-a.sortVal);
+  return{divs,leagueTop};
 }
 
-function renderStandings(divs, isNHL){
-  if(!divs.length)return '';
-  const multi=divs.length>1;
-  return `<div class="sec-lbl">Division Standings</div><div class="st-grid ${multi?'two-col':''}">`+
-    divs.map(d=>`<table class="st-table"><thead><tr><th>${esc(d.divName.replace(/Division/i,'').trim())}</th><th>W-L</th><th>${isNHL?'PTS':'PCT/GB'}</th></tr></thead><tbody>`+
-      d.rows.map(r=>`<tr class="${NY.includes(r.fullName)?'ny-row':''}"><td>${esc(r.name)}</td><td>${esc(r.rec)}</td><td>${esc(r.extra)}</td></tr>`).join('')+
-    `</tbody></table>`).join('')+`</div>`;
+function renderStandings(stData, isNHL){
+  const{divs,leagueTop}=stData;
+  if(!divs.length && !leagueTop.length)return '';
+  const colHdr=isNHL?'PTS':'PCT';
+  // Match row count on the right (league leaders) to the left stack so both columns align cleanly
+  const leftRowCount=divs.reduce((acc,d)=>acc+d.rows.length,0);
+  const topN=Math.max(5, Math.min(8, leftRowCount || 6));
+  const topRows=leagueTop.slice(0, topN);
+
+  const divTables=divs.map(d=>`<table class="st-table"><thead><tr><th>${esc(d.divName.replace(/Division/i,'').trim())}</th><th>W-L</th><th>${colHdr}</th></tr></thead><tbody>`+
+    d.rows.map(r=>`<tr class="${NY.includes(r.fullName)?'ny-row':''}"><td>${esc(r.name)}</td><td>${esc(r.rec)}</td><td>${esc(r.extra)}</td></tr>`).join('')+
+  `</tbody></table>`).join('');
+
+  const leagueTable=topRows.length?`<table class="st-table"><thead><tr><th>League Top ${topRows.length}</th><th>W-L</th><th>${colHdr}</th></tr></thead><tbody>`+
+    topRows.map((r,idx)=>`<tr class="${NY.includes(r.fullName)?'ny-row':''}"><td><span class="st-rank">${idx+1}.</span>${esc(r.name)}</td><td>${esc(r.rec)}</td><td>${esc(r.extra)}</td></tr>`).join('')+
+  `</tbody></table>`:'';
+
+  return `<div class="sec-lbl">Division &amp; League Standings</div><div class="st-split"><div class="st-stack">${divTables}</div><div>${leagueTable}</div></div>`;
 }
 
-function summarize(pk,nw,divs){
+function summarize(pk,nw,stData){
   const fin=pk.fin.map(e=>{
     const{away,home}=parts(e);
     const a=parseInt(away.score),h=parseInt(home.score);
@@ -247,12 +272,13 @@ function summarize(pk,nw,divs){
     return `${away.team?.displayName} at ${home.team?.displayName} (${fmtDay(e.date)})`;
   }).join(' | ')||'None';
 
-  const stSummary=divs.map(d=>`${d.divName}: `+d.rows.map(r=>`${r.name} (${r.rec})`).join(', ')).join(' ; ')||'None';
+  const divStr=stData.divs.map(d=>`${d.divName}: `+d.rows.map(r=>`${r.name} (${r.rec})`).join(', ')).join(' ; ')||'None';
+  const topStr=stData.leagueTop.slice(0,5).map((r,i)=>`#${i+1} ${r.name} (${r.rec})`).join(', ')||'None';
   const h=(nw.articles||[])
     .filter(a=>a.headline&&!/odds|best bets|betting|spread|parlay|fantasy/i.test(a.headline+' '+(a.description||'')))
     .slice(0,5)
     .map(a=>a.headline+(a.description?' ('+clip(a.description,110)+')':'')).join(' | ')||'No news';
-  return{fin,up,stSummary,h};
+  return{fin,up,stSummary:`Divisions: ${divStr} | Overall Leaders: ${topStr}`,h};
 }
 
 async function askAI(data){
@@ -264,10 +290,10 @@ STRICT RULES:
 1. ONLY mention game scores, winners, and matchups explicitly listed in the data below. NEVER invent scores or games.
 2. Ignore any betting, odds, or fantasy sports.
 3. For each league return:
-   - "rundown": 2-3 upbeat, accurate sentences on the games, standings, and NY teams.
+   - "rundown": 2-3 upbeat, accurate sentences on the games, division/league standings, and NY teams.
    - "watch": 1 sentence on a team or player to watch based strictly on the data.
    - "briefs": ONLY for off-season leagues (like MLB when Completed & Upcoming are "None"), return 2 short factual news briefs [{"title":"Short Headline","text":"1-2 complete sentences with no clickbait"}] summarizing the real off-season moves. For in-season leagues, return [].
-4. Also create "trivia": an array of 4 fun, age-appropriate multiple-choice or short-answer trivia questions (1 for NFL, 1 for NBA, 1 for MLB, 1 for NHL) inspired by today's teams/matchups or classic NY sports history, each with {"league":"NFL","q":"Question text?","a":"Short accurate answer"}.
+4. Also create "trivia": an array of 4 fun, age-appropriate trivia questions (1 for NFL, 1 for NBA, 1 for MLB, 1 for NHL) inspired by today's teams/standings or classic NY sports history, each with {"league":"NFL","q":"Question text?","a":"Short accurate answer"}.
 
 DATA:
 ${body}
@@ -300,7 +326,7 @@ Return valid JSON only:
   throw err;
 }
 
-function buildLeague(lg,pk,divs,nw,ai){
+function buildLeague(lg,pk,stData,nw,ai){
   const{live,fin,up}=pk;
   const inSeason=live.length||fin.length||up.length;
   let h=`<div class="league"><div class="league-hdr"><span class="league-name">${lg.l}</span><span style="font-size:14pt">${lg.i}</span></div><div class="league-body">`;
@@ -310,9 +336,8 @@ function buildLeague(lg,pk,divs,nw,ai){
   if(up.length)h+=`<div class="sec-lbl">Coming Up</div>`+up.map(gameRow).join('');
   if(!inSeason)h+=`<div class="off">No games scheduled — currently in the off-season.</div>`;
 
-  // Show live standings for in-season leagues; show clean off-season briefs for inactive leagues (like MLB)
-  if(inSeason && divs.length){
-    h+=renderStandings(divs, lg.k==='nhl');
+  if(inSeason && (stData.divs.length || stData.leagueTop.length)){
+    h+=renderStandings(stData, lg.k==='nhl');
   }else if(ai?.briefs?.length){
     h+=`<div class="sec-lbl">Off-Season Hot Stove</div>`+ai.briefs.map(b=>`<div class="hl"><b>${esc(b.title)}:</b> ${esc(b.text)}</div>`).join('');
   }
