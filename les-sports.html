@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Middle School Sports News – LES</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Source+Serif+4:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
@@ -40,16 +43,33 @@ body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georg
 .footer{border-top:3px double var(--navy);padding:4px 16px;display:flex;justify-content:space-between;font-size:7pt;color:#666}
 .footer a{color:#666}
 @media print{body{background:#fff}.no-print{display:none}@page{margin:.5in;size:letter}}
-</style></head><body>
-<div class="masthead"><div><h1>Middle School <span>Sports</span> News</h1>
-<div style="font-size:7.5pt;color:#aac;margin-top:2px">Your Daily Source for Local &amp; National Athletics</div></div>
-<div class="sub">Lutheran Elementary School<br>Brooklyn, NY 11209<br><span id="hdr-date" style="color:var(--gold);font-weight:600"></span></div></div>
+</style>
+</head>
+<body>
+<div class="masthead">
+  <div>
+    <h1>Middle School <span>Sports</span> News</h1>
+    <div style="font-size:7.5pt;color:#aac;margin-top:2px">Your Daily Source for Local &amp; National Athletics</div>
+  </div>
+  <div class="sub">Lutheran Elementary School<br>Brooklyn, NY 11209<br><span id="hdr-date" style="color:var(--gold);font-weight:600"></span></div>
+</div>
 <div class="gold-bar"></div>
-<div class="meta-bar"><span>🏈 NFL · 🏀 NBA · ⚾ MLB · 🏒 NHL</span><span id="meta-date"></span><span>New York Teams Featured</span></div>
+<div class="meta-bar">
+  <span>🏈 NFL · 🏀 NBA · ⚾ MLB · 🏒 NHL</span>
+  <span id="meta-date"></span>
+  <span>New York Teams Featured</span>
+</div>
 <div id="note" class="note no-print"></div>
-<div class="page"><div id="col-left"><div class="spin-wrap">Loading scores…</div></div><div id="col-right"><div class="spin-wrap">Loading scores…</div></div></div>
-<div class="footer"><span>Lutheran Elementary School · Brooklyn, NY 11209 · LES — The Key to Success</span><span id="footer-date"></span>
-<span class="no-print"><a href="#" id="setkey">Set AI key</a></span></div>
+<div class="page">
+  <div id="col-left"><div class="spin-wrap">Loading scores…</div></div>
+  <div id="col-right"><div class="spin-wrap">Loading scores…</div></div>
+</div>
+<div class="footer">
+  <span>Lutheran Elementary School · Brooklyn, NY 11209 · LES — The Key to Success</span>
+  <span id="footer-date"></span>
+  <span class="no-print"><a href="#" id="setkey">Set AI key</a></span>
+</div>
+
 <script>
 async function pickModels(k){
   const r=await fetch('https://api.groq.com/openai/v1/models',{headers:{Authorization:'Bearer '+k}});
@@ -104,13 +124,23 @@ function parts(e){
 }
 
 function validEvents(sc){
-  const minTime=shift(-4).getTime();
-  const maxTime=shift(3).getTime();
+  const minTime=shift(-3).setHours(0,0,0,0);
+  const maxTime=shift(2).setHours(23,59,59,999);
   return (sc.events||[]).filter(e=>{
+    if(!e.date)return false;
     const t=new Date(e.date).getTime();
     const sType=e.season?.type; // 2 = Regular Season, 3 = Postseason
-    return t>=minTime && t<=maxTime && (sType===2 || sType===3);
+    return !isNaN(t)&&t>=minTime&&t<=maxTime&&(sType===2||sType===3);
   });
+}
+
+function pickDisplayedGames(evList){
+  const sortNY=(a,b)=>(parts(b).isNY-parts(a).isNY);
+  return{
+    live:evList.filter(e=>e.status?.type?.state==='in').sort(sortNY).slice(0,2),
+    fin:evList.filter(e=>e.status?.type?.completed).sort((a,b)=>sortNY(a,b)||new Date(b.date)-new Date(a.date)).slice(0,4),
+    up:evList.filter(e=>e.status?.type?.state==='pre').sort((a,b)=>sortNY(a,b)||new Date(a.date)-new Date(b.date)).slice(0,3)
+  };
 }
 
 function gameRow(e){
@@ -121,8 +151,8 @@ function gameRow(e){
   return `<div class="game">${side(away,a>h,'t-away')}<div class="score">${has?`<div class="score-num">${a}–${h}</div>`:'<div class="score-num" style="font-size:9pt;color:#aaa">vs</div>'}<span class="score-status">${esc(status)}</span></div>${side(home,h>a,'t-home')}</div>`
 }
 
-function summarize(evList,nw){
-  const fin=evList.filter(e=>e.status?.type?.completed).slice(0,8).map(e=>{
+function summarize(pk,nw){
+  const fin=pk.fin.map(e=>{
     const{away,home}=parts(e);
     const a=parseInt(away.score),h=parseInt(home.score);
     const aName=away.team?.displayName,hName=home.team?.displayName;
@@ -131,23 +161,28 @@ function summarize(evList,nw){
     return `${aName} tied ${hName} ${a}-${h}`;
   }).join(' | ')||'None';
 
-  const up=evList.filter(e=>e.status?.type?.state==='pre').slice(0,6).map(e=>{
+  const live=pk.live.map(e=>{
+    const{away,home}=parts(e);
+    return `${away.team?.displayName} ${away.score} vs ${home.team?.displayName} ${home.score} (In Progress)`;
+  }).join(' | ')||'None';
+
+  const up=pk.up.map(e=>{
     const{away,home}=parts(e);
     return `${away.team?.displayName} at ${home.team?.displayName} (${fmtDay(e.date)})`;
   }).join(' | ')||'None';
 
   const h=(nw.articles||[]).slice(0,5).map(a=>a.headline+(a.description?' ('+clip(a.description,110)+')':'')).join(' | ')||'No news';
-  return{fin,up,h};
+  return{live,fin,up,h};
 }
 
 async function askAI(data){
   const k=getKey();if(!k)throw new Error('No AI key saved on this device (use "Set AI key" at the bottom).');
-  const body=LEAGUES.map(l=>`=== ${l.k.toUpperCase()} ===\nCompleted Games: ${data[l.k].fin}\nUpcoming Games: ${data[l.k].up}\nHeadlines: ${data[l.k].h}`).join('\n\n');
+  const body=LEAGUES.map(l=>`=== ${l.k.toUpperCase()} ===\nLive Games: ${data[l.k].live}\nCompleted Games: ${data[l.k].fin}\nUpcoming Games: ${data[l.k].up}\nHeadlines: ${data[l.k].h}`).join('\n\n');
   const prompt=`Today is ${dateStr}. You write for a middle school sports page (ages 11-14) at Lutheran Elementary School in Brooklyn. Students follow NY teams (Giants, Jets, Bills, Yankees, Mets, Knicks, Nets, Rangers, Islanders, Devils).
 
 STRICT RULES:
 1. ONLY mention game scores, winners, and matchups explicitly listed in the data below. NEVER invent scores, games, or playoff clinches.
-2. If "Completed Games" and "Upcoming Games" are both "None", explicitly state the league is in its off-season and summarize ONLY the headlines.
+2. If "Live Games", "Completed Games", and "Upcoming Games" are all "None", explicitly state the league is in its off-season and summarize ONLY the headlines.
 3. For each league write:
    - "rundown": 2-3 upbeat, accurate sentences summarizing the real results, upcoming matchups, and headlines (highlighting NY teams if they appear in the data).
    - "watch": 1 sentence on a team or player to watch based strictly on the provided data.
@@ -182,12 +217,8 @@ Return valid JSON only: {"nfl":{"rundown":"","watch":""},"nba":{"rundown":"","wa
   throw err;
 }
 
-function buildLeague(lg,evList,nw,ai){
-  const sortNY=(a,b)=>(parts(b).isNY-parts(a).isNY);
-  const live=evList.filter(e=>e.status?.type?.state==='in').sort(sortNY).slice(0,2);
-  const fin=evList.filter(e=>e.status?.type?.completed).sort((a,b)=>sortNY(a,b)||new Date(b.date)-new Date(a.date)).slice(0,4);
-  const up=evList.filter(e=>e.status?.type?.state==='pre').sort((a,b)=>sortNY(a,b)||new Date(a.date)-new Date(b.date)).slice(0,3);
-
+function buildLeague(lg,pk,nw,ai){
+  const{live,fin,up}=pk;
   let h=`<div class="league"><div class="league-hdr"><span class="league-name">${lg.l}</span><span style="font-size:14pt">${lg.i}</span></div><div class="league-body">`;
   if(ai?.rundown)h+=`<div class="rundown">${esc(ai.rundown)}</div>${ai.watch?`<div class="watch">👀 ${esc(ai.watch)}</div>`:''}`;
   if(live.length)h+=`<div class="sec-lbl">Live Now</div>`+live.map(gameRow).join('');
@@ -200,20 +231,31 @@ function buildLeague(lg,evList,nw,ai){
 }
 
 async function loadAll(){
-  const range=`${ymd(shift(-3))}-${ymd(shift(2))}`;
-  const [s,n]=await Promise.all([
-    Promise.allSettled(LEAGUES.map(l=>getJSON(`${ESPN}/${l.p}/scoreboard?dates=${range}`))),
-    Promise.allSettled(LEAGUES.map(l=>getJSON(`${ESPN}/${l.p}/news?limit=6`)))
-  ]);
-  const ev={},nw={},sum={};
-  LEAGUES.forEach((l,i)=>{
-    const rawSc=s[i].status==='fulfilled'?s[i].value:{events:[]};
-    ev[l.k]=validEvents(rawSc);
-    nw[l.k]=n[i].status==='fulfilled'?n[i].value:{articles:[]};
-    sum[l.k]=summarize(ev[l.k],nw[l.k]);
-  });
+  const datesToFetch=[ymd(shift(-2)),ymd(shift(-1)),ymd(T),ymd(shift(1))];
+  const nw={},picked={},sum={};
+
+  await Promise.all(LEAGUES.map(async l=>{
+    const [dayResults,newsRes]=await Promise.all([
+      Promise.allSettled(datesToFetch.map(d=>getJSON(`${ESPN}/${l.p}/scoreboard?dates=${d}`))),
+      getJSON(`${ESPN}/${l.p}/news?limit=6`).catch(()=>({articles:[]}))
+    ]);
+    const seen=new Set();
+    const merged=[];
+    dayResults.forEach(r=>{
+      if(r.status==='fulfilled'){
+        (r.value.events||[]).forEach(e=>{
+          if(!seen.has(e.id)){seen.add(e.id);merged.push(e)}
+        });
+      }
+    });
+    const valid=validEvents({events:merged});
+    picked[l.k]=pickDisplayedGames(valid);
+    nw[l.k]=newsRes;
+    sum[l.k]=summarize(picked[l.k],nw[l.k]);
+  }));
+
   const draw=ai=>{
-    const b=k=>buildLeague(LEAGUES.find(l=>l.k===k),ev[k],nw[k],ai?.[k]);
+    const b=k=>buildLeague(LEAGUES.find(l=>l.k===k),picked[k],nw[k],ai?.[k]);
     document.getElementById('col-left').innerHTML=b('nfl')+b('mlb');
     document.getElementById('col-right').innerHTML=b('nba')+b('nhl');
   };
@@ -221,4 +263,6 @@ async function loadAll(){
   try{draw(await askAI(sum))}catch(e){console.error(e);showNote('AI summaries unavailable: '+e.message)}
 }
 loadAll();
-</script></body></html>
+</script>
+</body>
+</html>
