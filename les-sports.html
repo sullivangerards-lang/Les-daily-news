@@ -55,40 +55,44 @@ body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georg
 .ans-text{width:100%;font-size:7pt;color:#333;transform:rotate(180deg);text-align:center}
 .ans-text.upright{transform:none}
 
-/* Page 2: Standings & NY Injury Report */
-.page-two{page-break-before:always;break-before:page;padding:5px 12px}
-.p2-banner{background:var(--navy);color:#fff;padding:3.5px 10px;display:flex;justify-content:space-between;align-items:center;border-bottom:2.5px solid var(--gold);margin-bottom:5px}
-.p2-banner h2{font-family:'Oswald',sans-serif;font-size:11pt;letter-spacing:1.2px;text-transform:uppercase}
-.p2-banner span{font-family:'Oswald',sans-serif;font-size:7pt;color:var(--gold);letter-spacing:.5px;text-transform:uppercase}
+/* Page 2: Standings & League-Wide Injury Report */
+.page-two{page-break-before:always;break-before:page;padding:4px 12px}
+.p2-banner{background:var(--navy);color:#fff;padding:3px 10px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--gold);margin-bottom:4px}
+.p2-banner h2{font-family:'Oswald',sans-serif;font-size:10.5pt;letter-spacing:1.2px;text-transform:uppercase}
+.p2-banner span{font-family:'Oswald',sans-serif;font-size:6.8pt;color:var(--gold);letter-spacing:.5px;text-transform:uppercase}
 
-.st-league-block{border:1px solid #ddd;background:#fff;margin-bottom:5px;break-inside:avoid}
+.st-league-block{border:1px solid #ddd;background:#fff;margin-bottom:4px;break-inside:avoid}
 .st-league-hdr{background:#f0f3fa;border-bottom:1px solid var(--navy);padding:1.5px 7px;display:flex;justify-content:space-between;align-items:center}
-.st-league-hdr span:first-child{font-family:'Oswald',sans-serif;font-size:8.5pt;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.8px}
-.st-league-hdr span:last-child{font-size:6.2pt;color:#666;font-family:'Oswald',sans-serif;text-transform:uppercase}
-.st-body{padding:3.5px 5px;display:grid;grid-template-columns:2.25fr 1fr;gap:7px;align-items:start}
+.st-league-hdr span:first-child{font-family:'Oswald',sans-serif;font-size:8pt;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.7px}
+.st-league-hdr span:last-child{font-size:6pt;color:#666;font-family:'Oswald',sans-serif;text-transform:uppercase}
+.st-body{padding:3px 5px;display:grid;grid-template-columns:2.25fr 1fr;gap:6px;align-items:start}
 .div-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
 .div-grid.cols-3{grid-template-columns:repeat(3,1fr)}
 .div-grid.cols-2{grid-template-columns:repeat(2,1fr)}
 .conf-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;border-left:1px solid #e2e6f0;padding-left:5px}
 
-.st-table{width:100%;border-collapse:collapse;font-size:6.2pt;line-height:1.1}
-.st-table th{font-family:'Oswald',sans-serif;font-size:5.8pt;text-transform:uppercase;color:#777;border-bottom:1px solid #ccc;padding:0.5px 1.5px;text-align:right}
+.st-table{width:100%;border-collapse:collapse;font-size:5.9pt;line-height:1.08}
+.st-table th{font-family:'Oswald',sans-serif;font-size:5.5pt;text-transform:uppercase;color:#777;border-bottom:1px solid #ccc;padding:0.5px 1px;text-align:right}
 .st-table th:first-child{text-align:left;color:var(--navy)}
-.st-table td{padding:0.8px 1.5px;border-bottom:1px dotted #eee;text-align:right;color:#444}
+.st-table td{padding:0.6px 1px;border-bottom:1px dotted #eee;text-align:right;color:#444}
 .st-table td:first-child{text-align:left;font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.1px;white-space:nowrap}
-.st-rank{color:#999;font-size:5.5pt;margin-right:1px}
+.st-rank{color:#999;font-size:5.3pt;margin-right:1px}
 .st-table tr.ny-row td{font-weight:700;color:var(--navy);background:#eef3fc}
 .st-table tr.ny-row td:first-child{color:var(--win)}
 .st-table tr.playoff-cut td{border-bottom:1.5px dashed var(--gold)}
 
-/* NY Injury Report Grid on Page 2 */
-.inj-grid{padding:4px 7px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px 10px;align-items:start}
-.inj-team{margin-bottom:3px}
-.inj-team-hdr{font-family:'Oswald',sans-serif;font-size:7.2pt;font-weight:700;color:var(--navy);text-transform:uppercase;border-bottom:1px solid var(--gold);margin-bottom:1.5px;padding-bottom:0.5px}
-.inj-row{font-size:6.6pt;line-height:1.25;padding:1px 0;border-bottom:1px dotted #eee;display:flex;justify-content:space-between;gap:4px}
-.inj-row:last-child{border-bottom:none}
+/* League-Wide Compact Injury Report */
+.inj-league-row{padding:3px 6px;border-bottom:1px solid #e5e8f0}
+.inj-league-row:last-child{border-bottom:none}
+.inj-lg-title{font-family:'Oswald',sans-serif;font-size:7.2pt;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px;background:#f7f9fd;padding:1px 4px;border-left:2.5px solid var(--gold)}
+.inj-4col{display:grid;grid-template-columns:repeat(4,1fr);gap:3px 8px}
+.inj-item{font-size:5.8pt;line-height:1.18;border-bottom:1px dotted #eee;padding:0.8px 0;display:flex;justify-content:space-between;align-items:baseline;gap:2px}
+.inj-item.ny-inj{background:#f2f8f4;padding:0.8px 2px}
+.inj-tm{font-family:'Oswald',sans-serif;font-weight:700;color:var(--navy);text-transform:uppercase;margin-right:2px}
+.inj-item.ny-inj .inj-tm{color:var(--win)}
 .inj-p{font-weight:600;color:#222}
-.inj-st{font-family:'Oswald',sans-serif;font-size:6pt;text-transform:uppercase;white-space:nowrap;padding:0 3px;border-radius:2px}
+.inj-det{color:#666}
+.inj-st{font-family:'Oswald',sans-serif;font-size:5.3pt;text-transform:uppercase;white-space:nowrap;padding:0 2px;border-radius:1.5px;flex-shrink:0}
 .inj-st.out{color:var(--out);background:#fdecea}
 .inj-st.q{color:#8a5a00;background:#fef5e0}
 
@@ -96,7 +100,7 @@ body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georg
 .spin-wrap{font-size:8pt;color:#999;padding:8px;text-align:center}
 .footer{border-top:2px double var(--navy);padding:2px 14px;display:flex;justify-content:space-between;font-size:6.5pt;color:#666}
 .footer a{color:#666}
-@media print{body{background:#fff}.no-print{display:none}@page{margin:.22in;size:letter}}
+@media print{body{background:#fff}.no-print{display:none}@page{margin:.2in;size:letter}}
 </style>
 </head>
 <body>
@@ -113,7 +117,7 @@ body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georg
 <div class="meta-bar">
   <span>🏈 NFL · 🏀 NBA · ⚾ MLB · 🏒 NHL</span>
   <span id="meta-date"></span>
-  <span>Page 1: Game Recaps &amp; Trivia · Page 2: Standings &amp; NY Injury Report</span>
+  <span>Page 1: Game Recaps &amp; Trivia · Page 2: Standings &amp; League Injury Report</span>
 </div>
 <div id="note" class="note no-print"></div>
 
@@ -135,15 +139,15 @@ body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georg
   <span class="no-print"><a href="#" id="setkey">Set AI key</a></span>
 </div>
 
-<!-- PAGE 2: COMPLETE STANDINGS & NY INJURY REPORT -->
+<!-- PAGE 2: COMPLETE STANDINGS & LEAGUE-WIDE INJURY REPORT -->
 <div class="page-two">
   <div class="p2-banner">
-    <h2>League &amp; Division Standings · NY Teams Injury Report</h2>
+    <h2>League &amp; Division Standings · League-Wide Injury Report</h2>
     <span id="p2-date"></span>
   </div>
   <div id="standings-page"><div class="spin-wrap">Loading full standings…</div></div>
   <div id="injury-page"></div>
-  <div class="footer" style="margin-top:4px">
+  <div class="footer" style="margin-top:3px">
     <span>Lutheran Elementary School · Brooklyn, NY 11209 · Page 2 of 2 (Gold dashed line = Playoff cutoff)</span>
     <span>NY Teams Highlighted in Green</span>
   </div>
@@ -318,50 +322,53 @@ function renderPage2Standings(leaguesData){
   el.innerHTML=blocks || '<div class="spin-wrap">Standings unavailable.</div>';
 }
 
-/* Parse & Render Live NY Teams Injury Report on Page 2 */
-function parseNYInjuries(rawInjuries, leagueIcon){
-  const teams=[];
+/* Parse & Render League-Wide Injury Report (NY teams prioritized, plus key injuries across all 30+ teams) */
+function parseLeagueInjuries(rawInjuries, lg){
+  const list=[];
   (rawInjuries?.injuries || []).forEach(grp=>{
-    const tName=grp.displayName || grp.team?.displayName || '';
-    if(!NY.includes(tName))return;
-    const items=(grp.injuries || []).slice(0,4).map(inj=>{
+    const fullName=grp.displayName || grp.team?.displayName || '';
+    const shortTeam=grp.team?.abbreviation || grp.team?.shortDisplayName || fullName.split(' ').pop();
+    const isNY=NY.includes(fullName);
+    const limit=isNY ? 3 : 1; // Up to 3 injuries for NY teams, top 1 notable injury for every other team across the league
+    const relevant=(grp.injuries || []).filter(inj=>!/probable/i.test(inj.status || ''));
+    relevant.slice(0, limit).forEach(inj=>{
       const ath=inj.athlete || {};
-      const pos=ath.position?.abbreviation ? ` (${ath.position.abbreviation})` : '';
-      const detail=inj.details?.type || inj.type?.description || inj.shortComment || '';
-      const status=inj.status || 'Injured';
-      return{
-        player:(ath.shortName || ath.displayName || 'Player') + pos,
-        detail:clip(detail, 26),
+      const detail=inj.details?.type || inj.type?.description || '';
+      const status=inj.status || 'Out';
+      list.push({
+        isNY,
+        team:shortTeam,
+        player:ath.shortName || ath.displayName || 'Player',
+        detail:clip(detail, 16),
         status
-      };
+      });
     });
-    if(items.length)teams.push({teamName:`${leagueIcon} ${tName}`, items});
   });
-  return teams;
+  // Sort NY teams first, then alphabetically by team code
+  list.sort((a,b)=>(b.isNY - a.isNY) || a.team.localeCompare(b.team));
+  return{lg, items:list};
 }
 
-function renderInjuryReport(allTeams){
+function renderInjuryReport(leagueInjuries){
   const el=document.getElementById('injury-page');
-  if(!allTeams.length){
-    el.innerHTML='';
-    return;
-  }
-  // Group into 3 balanced columns
-  const cols=[[],[],[]];
-  allTeams.forEach((t,i)=>cols[i%3].push(t));
+  const active=leagueInjuries.filter(x=>x.items.length);
+  if(!active.length){el.innerHTML='';return}
 
-  const colHtml=cols.map(col=>`<div>`+col.map(t=>`
-    <div class="inj-team">
-      <div class="inj-team-hdr">${esc(t.teamName)}</div>
-      ${t.items.map(it=>{
-        const isOut=/out|ir|inj/i.test(it.status);
-        return `<div class="inj-row"><span><span class="inj-p">${esc(it.player)}</span>${it.detail?' · '+esc(it.detail):''}</span><span class="inj-st ${isOut?'out':'q'}">${esc(it.status)}</span></div>`;
-      }).join('')}
-    </div>`).join('')+`</div>`).join('');
+  const rowsHtml=active.map(({lg,items})=>{
+    const cells=items.map(it=>{
+      const isOut=/out|ir|inj|susp/i.test(it.status);
+      const shortSt=/questionable/i.test(it.status)?'Q':/doubtful/i.test(it.status)?'D':/day-to-day/i.test(it.status)?'DTD':it.status;
+      return `<div class="inj-item ${it.isNY?'ny-inj':''}">
+        <span><span class="inj-tm">${esc(it.team)}</span><span class="inj-p">${esc(it.player)}</span>${it.detail?` <span class="inj-det">(${esc(it.detail)})</span>`:''}</span>
+        <span class="inj-st ${isOut?'out':'q'}">${esc(shortSt)}</span>
+      </div>`;
+    }).join('');
+    return `<div class="inj-league-row"><div class="inj-lg-title">${lg.i} ${lg.l}</div><div class="inj-4col">${cells}</div></div>`;
+  }).join('');
 
-  el.innerHTML=`<div class="st-league-block">
-    <div class="st-league-hdr"><span>🏥 New York Teams Injury Report</span><span>Latest Roster Statuses</span></div>
-    <div class="inj-grid">${colHtml}</div>
+  el.innerHTML=`<div class="st-league-block" style="margin-bottom:0">
+    <div class="st-league-hdr"><span>🏥 League-Wide Injury Report (All Teams · NY Highlighted)</span><span>Q = Questionable · D = Doubtful · DTD = Day-to-Day</span></div>
+    ${rowsHtml}
   </div>`;
 }
 
@@ -464,7 +471,7 @@ function renderTrivia(trivia){
 
 async function loadAll(){
   const datesToFetch=[ymd(shift(-2)),ymd(shift(-1)),ymd(T),ymd(shift(1))];
-  const nw={},picked={},standings={},sum={},p2Data={},nyInjuries=[];
+  const nw={},picked={},standings={},sum={},p2Data={},leagueInjuries=[];
 
   await Promise.all(LEAGUES.map(async l=>{
     const [dayResults,newsRes,stRes,injRes]=await Promise.all([
@@ -490,11 +497,13 @@ async function loadAll(){
       inSeason:Boolean(picked[l.k].live.length||picked[l.k].fin.length||picked[l.k].up.length),
       st:standings[l.k]
     };
-    nyInjuries.push(...parseNYInjuries(injRes, l.i));
+    if(p2Data[l.k].inSeason){
+      leagueInjuries.push(parseLeagueInjuries(injRes, l));
+    }
   }));
 
   renderPage2Standings(p2Data);
-  renderInjuryReport(nyInjuries);
+  renderInjuryReport(leagueInjuries);
 
   const draw=ai=>{
     const b=k=>buildLeague(LEAGUES.find(l=>l.k===k),picked[k],nw[k],ai?.[k]);
