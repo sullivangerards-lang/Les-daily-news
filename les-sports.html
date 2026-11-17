@@ -8,100 +8,103 @@
 <style>
 :root{--navy:#1a2f6e;--gold:#c9a84c;--cream:#faf8f3;--ink:#1c1c1c;--win:#1a6e2f;--loss:#888}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georgia,serif;font-size:9.5pt}
-.masthead{background:var(--navy);padding:7px 16px;display:flex;align-items:center;justify-content:space-between}
-.masthead h1{font-family:'Oswald',sans-serif;font-size:21pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff}
+body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georgia,serif;font-size:9pt}
+.masthead{background:var(--navy);padding:6px 14px;display:flex;align-items:center;justify-content:space-between}
+.masthead h1{font-family:'Oswald',sans-serif;font-size:20pt;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff}
 .masthead h1 span{color:var(--gold)}
-.sub{font-size:7.5pt;color:#aac;text-align:right;line-height:1.45}
-.gold-bar{height:4px;background:var(--gold)}
-.meta-bar{display:flex;justify-content:space-between;padding:3px 16px;background:#f0f3fa;border-bottom:1px solid #ddd;font-size:7.5pt;color:var(--navy);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px}
+.sub{font-size:7.2pt;color:#aac;text-align:right;line-height:1.4}
+.gold-bar{height:3px;background:var(--gold)}
+.meta-bar{display:flex;justify-content:space-between;padding:2.5px 14px;background:#f0f3fa;border-bottom:1px solid #ddd;font-size:7.2pt;color:var(--navy);font-family:'Oswald',sans-serif;text-transform:uppercase;letter-spacing:.5px}
 
-/* Page 1: Scores & News */
-.page{padding:9px 14px 4px;display:grid;grid-template-columns:1fr 1fr;gap:11px}
-.league{border:1px solid #ddd;background:#fff;margin-bottom:9px;break-inside:avoid}
-.league-hdr{background:var(--navy);color:#fff;padding:4px 10px;display:flex;justify-content:space-between;align-items:center}
-.league-name{font-family:'Oswald',sans-serif;font-size:10.5pt;font-weight:600;text-transform:uppercase;letter-spacing:1.5px}
-.league-body{padding:6px 9px}
-.sec-lbl{font-family:'Oswald',sans-serif;font-size:7pt;text-transform:uppercase;letter-spacing:2px;color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:2px;margin:6px 0 4px}
+/* Page 1: Active Sports (NFL, NBA, NHL) */
+.page{padding:7px 12px 2px;display:grid;grid-template-columns:1fr 1fr;gap:9px;align-items:start}
+.league{border:1px solid #ddd;background:#fff;margin-bottom:7px;break-inside:avoid}
+.league:last-child{margin-bottom:0}
+.league-hdr{background:var(--navy);color:#fff;padding:3px 9px;display:flex;justify-content:space-between;align-items:center}
+.league-name{font-family:'Oswald',sans-serif;font-size:10pt;font-weight:600;text-transform:uppercase;letter-spacing:1.3px}
+.league-body{padding:5px 8px}
+.sec-lbl{font-family:'Oswald',sans-serif;font-size:6.8pt;text-transform:uppercase;letter-spacing:1.8px;color:var(--gold);border-bottom:1px solid var(--gold);padding-bottom:1.5px;margin:5px 0 3px}
 .sec-lbl:first-child{margin-top:0}
-.game{display:grid;grid-template-columns:1fr 58px 1fr;align-items:center;padding:2.5px 0;border-bottom:1px dotted #eee;font-size:8pt;gap:3px}
+.game{display:grid;grid-template-columns:1fr 54px 1fr;align-items:center;padding:2px 0;border-bottom:1px dotted #eee;font-size:7.8pt;gap:2px}
 .game:last-child{border-bottom:none}
 .t-away{text-align:right}
-.t-name{font-family:'Oswald',sans-serif;font-size:8.5pt;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
-.t-rec{font-size:6.3pt;color:#aaa}
+.t-name{font-family:'Oswald',sans-serif;font-size:8.2pt;font-weight:600;text-transform:uppercase;letter-spacing:.2px}
+.t-rec{font-size:6pt;color:#aaa}
 .t-win .t-name{color:var(--win)}.t-loss .t-name{color:var(--loss)}
 .score{text-align:center}
-.score-num{font-family:'Oswald',sans-serif;font-size:12pt;font-weight:700;color:var(--navy);line-height:1}
-.score-status{display:block;font-size:6.2pt;color:#999}
-.rundown{font-size:8.4pt;line-height:1.48;color:#333}
-.watch{font-size:7.8pt;margin-top:4px;color:var(--navy);font-weight:600}
-.hl{font-size:7.9pt;line-height:1.42;padding:3px 0;border-bottom:1px dotted #eee}
+.score-num{font-family:'Oswald',sans-serif;font-size:11pt;font-weight:700;color:var(--navy);line-height:1}
+.score-status{display:block;font-size:5.8pt;color:#999}
+.rundown{font-size:8pt;line-height:1.4;color:#333}
+.watch{font-size:7.5pt;margin-top:3px;color:var(--navy);font-weight:600}
+.hl{font-size:7.6pt;line-height:1.35;padding:2px 0;border-bottom:1px dotted #eee}
 .hl:last-child{border-bottom:none}
-.hl b{font-family:'Oswald',sans-serif;font-weight:600;font-size:8.2pt;color:var(--navy)}
-.off{font-size:7.9pt;color:#888;padding:2px 0 4px}
+.hl b{font-family:'Oswald',sans-serif;font-weight:600;font-size:7.9pt;color:var(--navy)}
+.off{font-size:7.6pt;color:#888;padding:1px 0 3px}
 
 /* Trivia & End-of-Day Answer Key */
-.trivia-wrap{padding:2px 14px 6px}
+.trivia-wrap{padding:4px 12px 4px}
 .trivia-box{border:1.5px solid var(--navy);background:#fff;break-inside:avoid}
-.trivia-hdr{background:var(--navy);color:#fff;padding:4px 10px;display:flex;justify-content:space-between;align-items:center;font-family:'Oswald',sans-serif;font-size:9.5pt;letter-spacing:1.2px;text-transform:uppercase}
-.trivia-hdr span{color:var(--gold);font-size:7.5pt;letter-spacing:.5px}
-.trivia-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;padding:7px 10px}
-.tq{font-size:8pt;line-height:1.4;color:#222}
-.tq b{font-family:'Oswald',sans-serif;color:var(--navy);text-transform:uppercase;font-size:8pt;margin-right:4px}
+.trivia-hdr{background:var(--navy);color:#fff;padding:3px 9px;display:flex;justify-content:space-between;align-items:center;font-family:'Oswald',sans-serif;font-size:9pt;letter-spacing:1px;text-transform:uppercase}
+.trivia-hdr span{color:var(--gold);font-size:7pt;letter-spacing:.4px}
+.trivia-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;padding:5px 9px}
+.tq{font-size:7.6pt;line-height:1.35;color:#222}
+.tq b{font-family:'Oswald',sans-serif;color:var(--navy);text-transform:uppercase;font-size:7.6pt;margin-right:3px}
 
-.ans-cut{margin:4px 14px 6px;border-top:1.5px dashed #999;padding-top:4px;display:flex;justify-content:space-between;align-items:center;break-inside:avoid}
-.ans-label{font-family:'Oswald',sans-serif;font-size:7pt;text-transform:uppercase;letter-spacing:1px;color:#777}
-.ans-text{font-size:7.5pt;color:#333;transform:rotate(180deg);display:inline-block;text-align:right}
+.ans-cut{margin:3px 12px 4px;border-top:1.5px dashed #999;padding-top:3px;break-inside:avoid}
+.ans-label{font-family:'Oswald',sans-serif;font-size:6.8pt;text-transform:uppercase;letter-spacing:1px;color:#777;margin-bottom:2px}
+.ans-text{width:100%;font-size:7.2pt;color:#333;transform:rotate(180deg);text-align:center;padding:1px 0}
 .ans-text.upright{transform:none}
 
-/* Page 2: Full Standings & Playoff Picture */
-.page-two{page-break-before:always;break-before:page;padding:8px 14px}
-.p2-banner{background:var(--navy);color:#fff;padding:5px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--gold);margin-bottom:8px}
-.p2-banner h2{font-family:'Oswald',sans-serif;font-size:13pt;letter-spacing:1.5px;text-transform:uppercase}
-.p2-banner span{font-family:'Oswald',sans-serif;font-size:8pt;color:var(--gold);letter-spacing:.5px;text-transform:uppercase}
+/* Page 2: Standings & MLB Off-Season */
+.page-two{page-break-before:always;break-before:page;padding:6px 12px}
+.p2-banner{background:var(--navy);color:#fff;padding:4px 10px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--gold);margin-bottom:6px}
+.p2-banner h2{font-family:'Oswald',sans-serif;font-size:11.5pt;letter-spacing:1.3px;text-transform:uppercase}
+.p2-banner span{font-family:'Oswald',sans-serif;font-size:7.5pt;color:var(--gold);letter-spacing:.5px;text-transform:uppercase}
 
-.st-league-block{border:1px solid #ddd;background:#fff;margin-bottom:9px;break-inside:avoid}
-.st-league-hdr{background:#f0f3fa;border-bottom:1.5px solid var(--navy);padding:3px 10px;display:flex;justify-content:space-between;align-items:center}
-.st-league-hdr span:first-child{font-family:'Oswald',sans-serif;font-size:10pt;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:1px}
-.st-league-hdr span:last-child{font-size:7pt;color:#666;font-family:'Oswald',sans-serif;text-transform:uppercase}
-.st-body{padding:6px 8px;display:grid;grid-template-columns:2.2fr 1fr;gap:10px;align-items:start}
-.div-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.st-league-block{border:1px solid #ddd;background:#fff;margin-bottom:6px;break-inside:avoid}
+.st-league-hdr{background:#f0f3fa;border-bottom:1px solid var(--navy);padding:2px 8px;display:flex;justify-content:space-between;align-items:center}
+.st-league-hdr span:first-child{font-family:'Oswald',sans-serif;font-size:9pt;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.8px}
+.st-league-hdr span:last-child{font-size:6.5pt;color:#666;font-family:'Oswald',sans-serif;text-transform:uppercase}
+.st-body{padding:4px 6px;display:grid;grid-template-columns:2.25fr 1fr;gap:8px;align-items:start}
+.div-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
 .div-grid.cols-3{grid-template-columns:repeat(3,1fr)}
 .div-grid.cols-2{grid-template-columns:repeat(2,1fr)}
-.conf-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;border-left:1px solid #e2e6f0;padding-left:8px}
+.conf-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;border-left:1px solid #e2e6f0;padding-left:6px}
 
-.st-table{width:100%;border-collapse:collapse;font-size:7pt}
-.st-table th{font-family:'Oswald',sans-serif;font-size:6.3pt;text-transform:uppercase;color:#777;border-bottom:1px solid #ccc;padding:1px 2px;text-align:right}
+.st-table{width:100%;border-collapse:collapse;font-size:6.5pt;line-height:1.15}
+.st-table th{font-family:'Oswald',sans-serif;font-size:6pt;text-transform:uppercase;color:#777;border-bottom:1px solid #ccc;padding:1px 1.5px;text-align:right}
 .st-table th:first-child{text-align:left;color:var(--navy)}
-.st-table td{padding:1.5px 2px;border-bottom:1px dotted #eee;text-align:right;color:#444}
-.st-table td:first-child{text-align:left;font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.15px;white-space:nowrap}
-.st-rank{color:#999;font-size:6.2pt;margin-right:2px}
+.st-table td{padding:1px 1.5px;border-bottom:1px dotted #eee;text-align:right;color:#444}
+.st-table td:first-child{text-align:left;font-family:'Oswald',sans-serif;font-weight:400;letter-spacing:.1px;white-space:nowrap}
+.st-rank{color:#999;font-size:5.8pt;margin-right:1.5px}
 .st-table tr.ny-row td{font-weight:700;color:var(--navy);background:#eef3fc}
 .st-table tr.ny-row td:first-child{color:var(--win)}
 .st-table tr.playoff-cut td{border-bottom:1.5px dashed var(--gold)}
 
-.note{font-size:7pt;color:#a33;padding:2px 16px}
-.spin-wrap{font-size:8pt;color:#999;padding:12px;text-align:center}
-.footer{border-top:2px double var(--navy);padding:3px 16px;display:flex;justify-content:space-between;font-size:7pt;color:#666}
+.mlb-p2-grid{padding:5px 8px;display:grid;grid-template-columns:1fr 1.6fr;gap:10px;align-items:start}
+
+.note{font-size:7pt;color:#a33;padding:2px 14px}
+.spin-wrap{font-size:8pt;color:#999;padding:10px;text-align:center}
+.footer{border-top:2px double var(--navy);padding:2.5px 14px;display:flex;justify-content:space-between;font-size:6.8pt;color:#666}
 .footer a{color:#666}
-@media print{body{background:#fff}.no-print{display:none}@page{margin:.3in;size:letter}}
+@media print{body{background:#fff}.no-print{display:none}@page{margin:.25in;size:letter}}
 </style>
 </head>
 <body>
 
-<!-- PAGE 1: SCORES, NEWS & TRIVIA -->
+<!-- PAGE 1: ACTIVE SCORES, NEWS & TRIVIA -->
 <div class="masthead">
   <div>
     <h1>Middle School <span>Sports</span> News</h1>
-    <div style="font-size:7.5pt;color:#aac;margin-top:1px">Your Daily Source for Local &amp; National Athletics</div>
+    <div style="font-size:7pt;color:#aac;margin-top:1px">Your Daily Source for Local &amp; National Athletics</div>
   </div>
   <div class="sub">Lutheran Elementary School<br>Brooklyn, NY 11209<br><span id="hdr-date" style="color:var(--gold);font-weight:600"></span></div>
 </div>
 <div class="gold-bar"></div>
 <div class="meta-bar">
-  <span>🏈 NFL · 🏀 NBA · ⚾ MLB · 🏒 NHL</span>
+  <span>🏈 NFL · 🏀 NBA · 🏒 NHL · ⚾ MLB</span>
   <span id="meta-date"></span>
-  <span>Page 1: Scores &amp; Trivia · Page 2: Playoff Standings</span>
+  <span>Page 1: Game Recaps &amp; Trivia · Page 2: Standings &amp; MLB</span>
 </div>
 <div id="note" class="note no-print"></div>
 
@@ -123,14 +126,15 @@ body{background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georg
   <span class="no-print"><a href="#" id="setkey">Set AI key</a></span>
 </div>
 
-<!-- PAGE 2: COMPLETE DIVISION & CONFERENCE STANDINGS -->
+<!-- PAGE 2: COMPLETE STANDINGS & MLB -->
 <div class="page-two">
   <div class="p2-banner">
-    <h2>League &amp; Division Standings · Playoff Watch</h2>
+    <h2>League &amp; Division Standings · MLB Off-Season Report</h2>
     <span id="p2-date"></span>
   </div>
   <div id="standings-page"><div class="spin-wrap">Loading full standings…</div></div>
-  <div class="footer" style="margin-top:6px">
+  <div id="mlb-p2-area"></div>
+  <div class="footer" style="margin-top:4px">
     <span>Lutheran Elementary School · Brooklyn, NY 11209 · Page 2 of 2 (Gold dashed line = Playoff cutoff)</span>
     <span>NY Teams Highlighted in Green</span>
   </div>
@@ -222,7 +226,6 @@ function gameRow(e){
   return `<div class="game">${side(away,a>h,'t-away')}<div class="score">${has?`<div class="score-num">${a}–${h}</div>`:'<div class="score-num" style="font-size:9pt;color:#aaa">vs</div>'}<span class="score-status">${esc(status)}</span></div>${side(home,h>a,'t-home')}</div>`
 }
 
-/* Extract row stats consistently */
 function mapEntry(en, isNHL){
   const tm=en.team||{};
   const stats={};
@@ -243,7 +246,6 @@ function mapEntry(en, isNHL){
   };
 }
 
-/* Parse ALL Divisions + Conferences for Page 2 */
 function parseFullStandings(raw, isNHL){
   const divs=[];
   const confs=[];
@@ -262,7 +264,6 @@ function parseFullStandings(raw, isNHL){
   }
   walk(raw, '');
 
-  // Build Conference standings by grouping divisions under their parent conference
   const confMap=new Map();
   divs.forEach(d=>{
     const cKey=d.conf || 'League';
@@ -306,6 +307,32 @@ function renderPage2Standings(leaguesData){
   }).join('');
 
   el.innerHTML=blocks || '<div class="spin-wrap">Standings unavailable.</div>';
+}
+
+function renderMLBPage2(lg, pk, nw, ai){
+  const el=document.getElementById('mlb-p2-area');
+  const{live,fin,up}=pk;
+  const inSeason=live.length||fin.length||up.length;
+
+  let leftSide='';
+  if(ai?.rundown)leftSide+=`<div class="rundown">${esc(ai.rundown)}</div>${ai.watch?`<div class="watch">👀 ${esc(ai.watch)}</div>`:''}`;
+  if(live.length)leftSide+=`<div class="sec-lbl">Live Now</div>`+live.map(gameRow).join('');
+  if(fin.length)leftSide+=`<div class="sec-lbl">Recent Scores</div>`+fin.map(gameRow).join('');
+  if(up.length)leftSide+=`<div class="sec-lbl">Coming Up</div>`+up.map(gameRow).join('');
+  if(!inSeason)leftSide+=`<div class="off" style="margin-top:4px">No games scheduled — currently in the off-season.</div>`;
+
+  let rightSide='';
+  if(ai?.briefs?.length){
+    rightSide=`<div class="sec-lbl" style="margin-top:0">Off-Season Hot Stove</div>`+ai.briefs.map(b=>`<div class="hl"><b>${esc(b.title)}:</b> ${esc(b.text)}</div>`).join('');
+  }else{
+    const arts=(nw.articles||[]).filter(a=>a.headline&&!/odds|best bets|betting|spread|parlay|fantasy/i.test(a.headline+' '+(a.description||''))).slice(0,3);
+    if(arts.length)rightSide=`<div class="sec-lbl" style="margin-top:0">Off-Season Headlines</div>`+arts.map(a=>`<div class="hl"><b>${esc(a.headline)}</b></div>`).join('');
+  }
+
+  el.innerHTML=`<div class="st-league-block">
+    <div class="st-league-hdr"><span>${lg.i} ${lg.l} — ${inSeason?'Diamond Report':'Off-Season Hot Stove'}</span><span>Yankees &amp; Mets Off-Season Watch</span></div>
+    <div class="mlb-p2-grid"><div>${leftSide}</div><div>${rightSide}</div></div>
+  </div>`;
 }
 
 function summarize(pk,nw,stData){
@@ -376,20 +403,13 @@ Return valid JSON only:
   throw err;
 }
 
-function buildLeague(lg,pk,nw,ai){
+function buildLeague(lg,pk,ai){
   const{live,fin,up}=pk;
-  const inSeason=live.length||fin.length||up.length;
-  let h=`<div class="league"><div class="league-hdr"><span class="league-name">${lg.l}</span><span style="font-size:14pt">${lg.i}</span></div><div class="league-body">`;
+  let h=`<div class="league"><div class="league-hdr"><span class="league-name">${lg.l}</span><span style="font-size:13pt">${lg.i}</span></div><div class="league-body">`;
   if(ai?.rundown)h+=`<div class="rundown">${esc(ai.rundown)}</div>${ai.watch?`<div class="watch">👀 ${esc(ai.watch)}</div>`:''}`;
   if(live.length)h+=`<div class="sec-lbl">Live Now</div>`+live.map(gameRow).join('');
   if(fin.length)h+=`<div class="sec-lbl">Recent Scores</div>`+fin.map(gameRow).join('');
   if(up.length)h+=`<div class="sec-lbl">Coming Up</div>`+up.map(gameRow).join('');
-  if(!inSeason){
-    h+=`<div class="off">No games scheduled — currently in the off-season.</div>`;
-    if(ai?.briefs?.length){
-      h+=`<div class="sec-lbl">Off-Season Hot Stove</div>`+ai.briefs.map(b=>`<div class="hl"><b>${esc(b.title)}:</b> ${esc(b.text)}</div>`).join('');
-    }
-  }
   return h+'</div></div>';
 }
 
@@ -402,7 +422,7 @@ function renderTrivia(trivia){
     trivia.map((item,idx)=>`<div class="tq"><b>${idx+1}. [${esc(item.league)}]</b> ${esc(item.q)}</div>`).join('')+
   `</div></div>`;
   aList.innerHTML=trivia.map((item,idx)=>`<b>${idx+1}.</b> ${esc(item.a)}`).join(' &nbsp;·&nbsp; ');
-  aArea.style.display='flex';
+  aArea.style.display='block';
 }
 
 async function loadAll(){
@@ -437,9 +457,12 @@ async function loadAll(){
   renderPage2Standings(p2Data);
 
   const draw=ai=>{
-    const b=k=>buildLeague(LEAGUES.find(l=>l.k===k),picked[k],nw[k],ai?.[k]);
-    document.getElementById('col-left').innerHTML=b('nfl')+b('mlb');
+    const b=k=>buildLeague(LEAGUES.find(l=>l.k===k),picked[k],ai?.[k]);
+    // Page 1: NFL on left, NBA + NHL on right
+    document.getElementById('col-left').innerHTML=b('nfl');
     document.getElementById('col-right').innerHTML=b('nba')+b('nhl');
+    // Page 2: MLB Off-Season box underneath NFL/NBA/NHL Standings
+    renderMLBPage2(LEAGUES.find(l=>l.k==='mlb'),picked.mlb,nw.mlb,ai?.mlb);
     renderTrivia(ai?.trivia);
   };
   draw(null);
